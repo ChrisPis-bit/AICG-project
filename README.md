@@ -1,1 +1,1 @@
-# AICT-project
+# AICG-project
