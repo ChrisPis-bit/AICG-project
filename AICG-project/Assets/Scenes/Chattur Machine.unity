@@ -432,7 +432,7 @@ MonoBehaviour:
   contextSize: 8192
   batchSize: 512
   basePrompt: 
-  model: Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf
+  model: llama-3.2-1b-instruct-q4_k_m.gguf
   chatTemplate: chatml
   lora: 
   loraWeights: 
@@ -686,22 +686,22 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 85d4d16bd0d75834982b45b0b5a3ebb3,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 85d4d16bd0d75834982b45b0b5a3ebb3,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 85d4d16bd0d75834982b45b0b5a3ebb3,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 85d4d16bd0d75834982b45b0b5a3ebb3,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 85d4d16bd0d75834982b45b0b5a3ebb3,
         type: 3}
@@ -711,7 +711,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 85d4d16bd0d75834982b45b0b5a3ebb3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 85d4d16bd0d75834982b45b0b5a3ebb3,
         type: 3}
@@ -726,7 +726,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 85d4d16bd0d75834982b45b0b5a3ebb3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1776482302}
   m_SourcePrefab: {fileID: 100100000, guid: 85d4d16bd0d75834982b45b0b5a3ebb3, type: 3}
 --- !u!4 &1601449572 stripped
 Transform:
@@ -734,6 +738,33 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1601449571}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1776482301 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 85d4d16bd0d75834982b45b0b5a3ebb3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1601449571}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1776482302
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776482301}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 85d4d16bd0d75834982b45b0b5a3ebb3, type: 3}
+  m_Controller: {fileID: 9100000, guid: 6fb5fbace40633043be1850cb846fe89, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1786400170
 PrefabInstance:
   m_ObjectHideFlags: 0
