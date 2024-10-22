@@ -208,13 +208,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.15338038, y: -0, z: -0, w: 0.9881672}
+  m_LocalPosition: {x: 0, y: 2.153, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 17.646, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,6 +559,7 @@ MonoBehaviour:
   llmCharacter: {fileID: 1597621129}
   playerText: {fileID: 7694373629470229683}
   AIText: {fileID: 6047297436151188709}
+  currentMessage: 0
 --- !u!4 &1357390748
 Transform:
   m_ObjectHideFlags: 0
@@ -610,8 +611,8 @@ MonoBehaviour:
   port: 13333
   numRetries: 10
   APIKey: 
-  save: 
-  saveCache: 0
+  save: chat
+  saveCache: 1
   debugPrompt: 0
   stream: 1
   grammar: 
@@ -638,10 +639,15 @@ MonoBehaviour:
   ignoreEos: 0
   nKeep: -1
   stop: []
-  playerName: user
-  AIName: assistant
-  prompt: A chat between a curious human and an artificial intelligence assistant.
-    The assistant gives helpful, detailed, and polite answers to the human's questions.
+  playerName: player
+  AIName: alan turing
+  prompt: The year is the mid-1900s, and you, the Player, are an advanced AI having
+    a conversation with Alan Turing, played by the LLM (AI). Turing, the father of
+    modern computer science, is skeptical of your claim to be artificial, as the
+    concept of AI is still very new. He is determined to test whether your responses
+    show signs of being human or truly machine-like. The player must convince him
+    that he is not human, but in fact an AI, through 10 exchanges. Alan Turing should
+    respond with sarcasm and ego.
   setNKeepToPrompt: 1
   chat: []
   grammarString: 
@@ -851,7 +857,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 10.375977, y: -110.75391}
-  m_SizeDelta: {x: 400, y: 100}
+  m_SizeDelta: {x: 1037.9, y: 243.7907}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &58648471905605568
 GameObject:

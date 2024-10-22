@@ -9,6 +9,7 @@ namespace AICG
         public LLMCharacter llmCharacter;
         public InputField playerText;
         public Text AIText;
+        [SerializeField] private int currentMessage;
 
         void Start()
         {
@@ -18,9 +19,28 @@ namespace AICG
 
         void onInputFieldSubmit(string message)
         {
+            currentMessage++;
             playerText.interactable = false;
+            if (currentMessage >= 2)
+            {
+                Ending(message);
+            }
+            else
+            {
+                SubmitMessage(message);
+            }
+            
+        }
+
+        void SubmitMessage(string message)
+        {
             AIText.text = "...";
             _ = llmCharacter.Chat(message, SetAIText, AIReplyComplete);
+        }
+
+        void Ending(string message){
+            llmCharacter.SetPrompt("The AI speaking as Alan Turing will now tell the player a score. This score is the percentage of how much the AI thinks the player is a human.", false);
+            SubmitMessage(message);
         }
 
         public void SetAIText(string text)
