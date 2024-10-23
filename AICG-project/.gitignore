@@ -95,3 +95,6 @@ fmod_editor.log
 
 # SoundEffects
 /[sS]ounds/
+
+# AICG project specific
+/Assets/StreamingAssets/undreamai-v1.1.12-llamacpp/
