@@ -1,4 +1,5 @@
 using LLMUnity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,13 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
+public enum AIStates
+{
+    Idle,
+    Thinking,
+    Talking
+}
 
 public class ChatHandler : MonoBehaviour
 {
@@ -18,9 +26,12 @@ public class ChatHandler : MonoBehaviour
     [SerializeField] private ChatBubble _bubblePrefab;
     [SerializeField] private RectTransform _bubbleLayout;
 
+    public event Action<AIStates> onStateChange;
+
     private List<ChatBubble> _chatBubbles = new();
 
-    private bool _AIThinking = false;
+    private bool _Thinking = false;
+    private bool _Talking = false;
 
     // Start is called before the first frame update
     async void Start()
@@ -42,21 +53,33 @@ public class ChatHandler : MonoBehaviour
 
     private void OnInputEdited(string input)
     {
-        if (!_AIThinking && Input.GetKeyDown(KeyCode.Return))
+        if (!_Thinking && Input.GetKeyDown(KeyCode.Return))
         {
-            _playerInputField.text = "";
+            onStateChange?.Invoke(AIStates.Thinking);
+
             AddPlayerBubble(input);
             ChatBubble AIBubble = AddAIBubble("...");
-            _AIThinking = true;
-            _playerInputField.DeactivateInputField();
+            _Thinking = true;
+
+            _playerInputField.interactable = false;
+            _playerInputField.text = "";
+
             Task chatTask = _LLMCharacter.Chat(input, s =>
             {
+                if (!_Talking)
+                    onStateChange?.Invoke(AIStates.Talking);
+
+                _Talking = true;
                 AIBubble.SetText(s);
                 OrderBubbles();
             }, () =>
             {
-                _AIThinking = false;
-                _playerInputField.ActivateInputField();
+                onStateChange?.Invoke(AIStates.Idle);
+
+                _playerInputField.text = "";
+                _playerInputField.interactable = true;
+                _Thinking = false;
+                _Talking = false;
             });
             OrderBubbles();
 
@@ -86,6 +109,7 @@ public class ChatHandler : MonoBehaviour
         bubble.RectTransform.pivot = new Vector2(0, bubble.RectTransform.pivot.y);
 
         bubble.SetText(text);
+        bubble.SetPersonText("You");
 
         return bubble;
     }
@@ -100,6 +124,7 @@ public class ChatHandler : MonoBehaviour
         bubble.RectTransform.pivot = new Vector2(1, bubble.RectTransform.pivot.y);
 
         bubble.SetText(text);
+        bubble.SetPersonText("AIlan Turing");
 
         return bubble;
     }
