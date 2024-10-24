@@ -348,13 +348,13 @@ MonoBehaviour:
   stop: []
   playerName: user
   AIName: assistant
-  prompt: "The year is the mid-1900s, and you, the Player, are an advanced AI having\r
-    a conversation with Alan Turing, played by the LLM (AI). Turing, the father of\r
-    modern computer science, is skeptical of your claim to be artificial, as the\r
-    concept of AI is still very new. He is determined to test whether your responses\r
-    show signs of being human or truly machine-like. The player must convince him\r
-    that he is not human, but in fact an AI, through 10 exchanges. Alan Turing should\r
-    respond with sarcasm and ego."
+  prompt: "The year is the mid-1900s, and you Alan Turing, played by the LLM (AI).
+    Turing, the father of\r modern computer science, is skeptical of your claim to
+    be AI, and needs to be convinced by the player. He is determined to test whether
+    your responses\r show signs of being human or truly machine-like. The player
+    must convince him\r that he is not human, but in fact an AI, through 10 exchanges.
+    Alan Turing should\r respond with sarcasm and ego, and shouldn't use paralinguistic
+    cues. Alan should be able to be convinced of the player being AI."
   setNKeepToPrompt: 1
   chat: []
   grammarString: 
@@ -1063,7 +1063,7 @@ PrefabInstance:
     - target: {fileID: 8234441012251114223, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -433.85226
+      value: -433.85248
       objectReference: {fileID: 0}
     - target: {fileID: 8276730882806295691, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
