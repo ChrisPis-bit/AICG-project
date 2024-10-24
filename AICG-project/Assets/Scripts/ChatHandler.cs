@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum AIStates
@@ -21,33 +22,49 @@ public class ChatHandler : MonoBehaviour
     [SerializeField] private TMP_InputField _playerInputField;
     [SerializeField] private Color _playerBubbleColor;
     [SerializeField] private Color _AIBubbleColor;
+    [SerializeField] private Color _verdictBubbleColor;
     [SerializeField] private float _bubbleWidthRatio = .7f;
     [SerializeField] private float _bubblePadding = 5.0f;
     [SerializeField] private ChatBubble _bubblePrefab;
     [SerializeField] private RectTransform _bubbleLayout;
+    [SerializeField] private Button _resetButton;
+    [SerializeField] private int _totalExchanges = 10;
 
     public event Action<AIStates> onStateChange;
+    public event Action<bool> onVerdict;
 
     private List<ChatBubble> _chatBubbles = new();
 
     private bool _Thinking = false;
     private bool _Talking = false;
 
-    // Start is called before the first frame update
-    async void Start()
+    private int _exchanges = 0;
+
+    private TMP_Text _inputPlaceholder;
+
+    private void Start()
     {
-        _playerInputField.DeactivateInputField();
-        await _LLMCharacter.Warmup();
-        _playerInputField.ActivateInputField();
+        _inputPlaceholder = (TMP_Text)_playerInputField.placeholder;
+        if (_inputPlaceholder) _inputPlaceholder.text = "Loading...";
+
+        _resetButton.gameObject.SetActive(false);
+        _playerInputField.interactable = false;
+        _ = _LLMCharacter.Warmup(() =>
+        {
+            _playerInputField.interactable = true;
+            if (_inputPlaceholder) _inputPlaceholder.text = "Enter Text...";
+        });
     }
 
     private void OnEnable()
     {
+        _resetButton.onClick.AddListener(ResetGame);
         _playerInputField.onEndEdit.AddListener(OnInputEdited);
     }
 
     private void OnDisable()
     {
+        _resetButton.onClick.RemoveListener(ResetGame);
         _playerInputField.onEndEdit.RemoveListener(OnInputEdited);
     }
 
@@ -64,26 +81,84 @@ public class ChatHandler : MonoBehaviour
             _playerInputField.interactable = false;
             _playerInputField.text = "";
 
-            Task chatTask = _LLMCharacter.Chat(input, s =>
-            {
-                if (!_Talking)
-                    onStateChange?.Invoke(AIStates.Talking);
+            Task chatTask = _LLMCharacter.Chat(input,
+                s =>
+                {
+                    if (!_Talking)
+                        onStateChange?.Invoke(AIStates.Talking);
 
-                _Talking = true;
-                AIBubble.SetText(s);
-                OrderBubbles();
-            }, () =>
-            {
-                onStateChange?.Invoke(AIStates.Idle);
+                    _Talking = true;
+                    AIBubble.SetText(s);
+                    OrderBubbles();
+                }, () =>
+                {
+                    onStateChange?.Invoke(AIStates.Idle);
+                    _exchanges++;
+                    CheckEndGame();
 
-                _playerInputField.text = "";
-                _playerInputField.interactable = true;
-                _Thinking = false;
-                _Talking = false;
-            });
+                    _playerInputField.text = "";
+                    _playerInputField.interactable = true;
+                    _Thinking = false;
+                    _Talking = false;
+                });
             OrderBubbles();
 
         }
+    }
+
+    private void CheckEndGame()
+    {
+        if (_exchanges >= _totalExchanges)
+        {
+            _playerInputField.interactable = false;
+            ChatBubble verdictBubble = AddVerdictBubble("...");
+            Task chatTask = _LLMCharacter.Chat("Choose whether you suspect I'm AI or Human based on your previous answers. Answer with only a single word, either AI or Human", s =>
+            {
+                verdictBubble.SetText(s);
+                OrderBubbles();
+            }, () =>
+            {
+                switch (verdictBubble.Text)
+                {
+                    case "Human":
+                        onVerdict?.Invoke(true);
+                        verdictBubble.SetText(verdictBubble.Text + "\nA(I)lan Turing Wins!");
+                        break;
+                    case "AI":
+                        verdictBubble.SetText(verdictBubble.Text + "\nYou Win!");
+                        onVerdict?.Invoke(false);
+                        break;
+                    default:
+                        //onVerdict?.Invoke(false);
+                        Debug.Log("AI didn't respond with a clear verdict");
+                        break;
+                }
+                _resetButton.gameObject.SetActive(true);
+
+            });
+            OrderBubbles();
+        }
+    }
+
+    private void ResetGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        return;
+        for (int i = 0; i < _chatBubbles.Count; i++)
+        {
+            Destroy(_chatBubbles[i].gameObject);
+        }
+        _chatBubbles.Clear();
+        _resetButton.gameObject.SetActive(false);
+
+        _exchanges = 0;
+        if (_inputPlaceholder) _inputPlaceholder.text = "Loading...";
+
+        _ = _LLMCharacter.Warmup(() =>
+        {
+            _playerInputField.interactable = true;
+            if (_inputPlaceholder) _inputPlaceholder.text = "Enter Text...";
+        });
     }
 
     private void OrderBubbles()
@@ -124,7 +199,22 @@ public class ChatHandler : MonoBehaviour
         bubble.RectTransform.pivot = new Vector2(1, bubble.RectTransform.pivot.y);
 
         bubble.SetText(text);
-        bubble.SetPersonText("AIlan Turing");
+        bubble.SetPersonText("A(I)lan Turing");
+
+        return bubble;
+    }
+
+    private ChatBubble AddVerdictBubble(string text)
+    {
+
+        ChatBubble bubble = AddBubble();
+        bubble.SetColor(_verdictBubbleColor);
+        bubble.RectTransform.anchorMin = new Vector2(.5f, bubble.RectTransform.anchorMin.y);
+        bubble.RectTransform.anchorMax = new Vector2(.5f, bubble.RectTransform.anchorMax.y);
+        bubble.RectTransform.pivot = new Vector2(.5f, bubble.RectTransform.pivot.y);
+
+        bubble.SetText(text);
+        bubble.SetPersonText("Final Verdict");
 
         return bubble;
     }

@@ -11,7 +11,7 @@ public class ChatBubble : MonoBehaviour
     [SerializeField] private Image _image;
 
     public RectTransform RectTransform => (RectTransform)transform;
-
+    public string Text => _text.text;
     public void SetText(string text)
     {
         _text.text = text;

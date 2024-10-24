@@ -10,12 +10,19 @@ public class AIAnimator : MonoBehaviour
 
     private void OnEnable()
     {
+        _chatHandler.onVerdict += OnVerdict;
         _chatHandler.onStateChange += OnAIStateChange;
     }
 
     private void OnDisable()
     {
+        _chatHandler.onVerdict -= OnVerdict;
         _chatHandler.onStateChange -= OnAIStateChange;
+    }
+
+    private void OnVerdict(bool correct)
+    {
+        _animator.SetTrigger(correct ? "Win" : "Lose");
     }
 
     private void OnAIStateChange(AIStates state)
