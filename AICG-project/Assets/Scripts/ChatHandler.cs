@@ -42,6 +42,7 @@ public class ChatHandler : MonoBehaviour
 
     private TMP_Text _inputPlaceholder;
 
+
     private void Start()
     {
         _inputPlaceholder = (TMP_Text)_playerInputField.placeholder;
@@ -93,16 +94,16 @@ public class ChatHandler : MonoBehaviour
                 }, () =>
                 {
                     onStateChange?.Invoke(AIStates.Idle);
-                    _exchanges++;
-                    CheckEndGame();
 
                     _playerInputField.text = "";
                     _playerInputField.interactable = true;
                     _Thinking = false;
                     _Talking = false;
+
+                    _exchanges++;
+                    CheckEndGame();
                 });
             OrderBubbles();
-
         }
     }
 
@@ -162,15 +163,16 @@ public class ChatHandler : MonoBehaviour
 
     private void OrderBubbles()
     {
-        _bubbleLayout.sizeDelta = new Vector2(_bubbleLayout.sizeDelta.x, _chatBubbles.Sum(b => _bubblePadding + b.RectTransform.rect.height));
+        _bubbleLayout.sizeDelta = new Vector2(_bubbleLayout.sizeDelta.x, _chatBubbles.Sum(b => _bubblePadding + b.RectTransform.sizeDelta.y));
 
         float curHeight = 0;
         for (int i = _chatBubbles.Count - 1; i >= 0; i--)
         {
             ChatBubble bubble = _chatBubbles[i];
+
             curHeight += _bubblePadding;
-            bubble.RectTransform.position = new Vector3(bubble.RectTransform.position.x, _bubbleLayout.position.y + curHeight, bubble.RectTransform.position.z);
-            curHeight += bubble.RectTransform.rect.height;
+            bubble.RectTransform.anchoredPosition = new Vector3(0, curHeight);
+            curHeight += bubble.RectTransform.sizeDelta.y;
         }
     }
 
@@ -178,8 +180,8 @@ public class ChatHandler : MonoBehaviour
     {
         ChatBubble bubble = AddBubble();
         bubble.SetColor(_playerBubbleColor);
-        bubble.RectTransform.anchorMin = new Vector2(0, bubble.RectTransform.anchorMin.y);
-        bubble.RectTransform.anchorMax = new Vector2(0, bubble.RectTransform.anchorMax.y);
+        bubble.RectTransform.anchorMin = new Vector2(0, 0);
+        bubble.RectTransform.anchorMax = new Vector2(0, 0);
         bubble.RectTransform.pivot = new Vector2(0, bubble.RectTransform.pivot.y);
 
         bubble.SetText(text);
@@ -193,8 +195,8 @@ public class ChatHandler : MonoBehaviour
 
         ChatBubble bubble = AddBubble();
         bubble.SetColor(_AIBubbleColor);
-        bubble.RectTransform.anchorMin = new Vector2(1, bubble.RectTransform.anchorMin.y);
-        bubble.RectTransform.anchorMax = new Vector2(1, bubble.RectTransform.anchorMax.y);
+        bubble.RectTransform.anchorMin = new Vector2(1, 0);
+        bubble.RectTransform.anchorMax = new Vector2(1, 0);
         bubble.RectTransform.pivot = new Vector2(1, bubble.RectTransform.pivot.y);
 
         bubble.SetText(text);
@@ -208,8 +210,8 @@ public class ChatHandler : MonoBehaviour
 
         ChatBubble bubble = AddBubble();
         bubble.SetColor(_verdictBubbleColor);
-        bubble.RectTransform.anchorMin = new Vector2(.5f, bubble.RectTransform.anchorMin.y);
-        bubble.RectTransform.anchorMax = new Vector2(.5f, bubble.RectTransform.anchorMax.y);
+        bubble.RectTransform.anchorMin = new Vector2(.5f, 0);
+        bubble.RectTransform.anchorMax = new Vector2(.5f, 0);
         bubble.RectTransform.pivot = new Vector2(.5f, bubble.RectTransform.pivot.y);
 
         bubble.SetText(text);
