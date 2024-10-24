@@ -413,7 +413,7 @@ MonoBehaviour:
   contextSize: 8192
   batchSize: 512
   basePrompt: 
-  model: Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf
+  model: llama-3.2-3b-instruct-q4_k_m.gguf
   chatTemplate: llama3 chat
   lora: 
   loraWeights: 
@@ -806,7 +806,7 @@ PrefabInstance:
     - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: _totalExchanges
-      value: 6
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7798487105960653808, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
@@ -826,7 +826,7 @@ PrefabInstance:
     - target: {fileID: 8234441012251114223, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -433.0136
+      value: -500.423
       objectReference: {fileID: 0}
     - target: {fileID: 8276730882806295691, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}

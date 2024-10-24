@@ -1,6 +1,5 @@
 using LLMUnity;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,8 +34,8 @@ public class ChatHandler : MonoBehaviour
 
     private List<ChatBubble> _chatBubbles = new();
 
-    private bool _Thinking = false;
-    private bool _Talking = false;
+    private bool _thinking = false;
+    private bool _talking = false;
 
     private int _exchanges = 0;
 
@@ -54,57 +53,70 @@ public class ChatHandler : MonoBehaviour
         {
             _playerInputField.interactable = true;
             if (_inputPlaceholder) _inputPlaceholder.text = "Enter Text...";
+
+            GetAIResponse("Hello, please introduce yourself and state your goal with this conversation.", null);
         });
     }
 
     private void OnEnable()
     {
         _resetButton.onClick.AddListener(ResetGame);
-        _playerInputField.onEndEdit.AddListener(OnInputEdited);
+        _playerInputField.onEndEdit.AddListener(InputChat);
     }
 
     private void OnDisable()
     {
         _resetButton.onClick.RemoveListener(ResetGame);
-        _playerInputField.onEndEdit.RemoveListener(OnInputEdited);
+        _playerInputField.onEndEdit.RemoveListener(InputChat);
     }
 
-    private void OnInputEdited(string input)
+    private void InputChat(string input)
     {
-        if (!_Thinking && Input.GetKeyDown(KeyCode.Return))
+        if (!_thinking && Input.GetKeyDown(KeyCode.Return))
         {
-            onStateChange?.Invoke(AIStates.Thinking);
 
             AddPlayerBubble(input);
-            ChatBubble AIBubble = AddAIBubble("...");
-            _Thinking = true;
-
-            _playerInputField.interactable = false;
-            _playerInputField.text = "";
-
-            Task chatTask = _LLMCharacter.Chat(input,
-                s =>
-                {
-                    if (!_Talking)
-                        onStateChange?.Invoke(AIStates.Talking);
-
-                    _Talking = true;
-                    AIBubble.SetText(s);
-                    OrderBubbles();
-                }, () =>
-                {
-                    onStateChange?.Invoke(AIStates.Idle);
-
-                    _playerInputField.text = "";
-                    _playerInputField.interactable = true;
-                    _Thinking = false;
-                    _Talking = false;
-
-                    _exchanges++;
-                    CheckEndGame();
-                });
-            OrderBubbles();
+            GetAIResponse(input, () =>
+            {
+                _exchanges++;
+                CheckEndGame();
+            });
         }
+    }
+
+    private void GetAIResponse(string input, Action onFinished)
+    {
+        if (_thinking)
+            return;
+
+        onStateChange?.Invoke(AIStates.Thinking);
+        ChatBubble AIBubble = AddAIBubble("...");
+        _thinking = true;
+
+        _playerInputField.interactable = false;
+        _playerInputField.text = "";
+
+        Task chatTask = _LLMCharacter.Chat(input,
+            s =>
+            {
+                if (!_talking)
+                    onStateChange?.Invoke(AIStates.Talking);
+
+                _talking = true;
+                AIBubble.SetText(s);
+                OrderBubbles();
+            }, () =>
+            {
+                onStateChange?.Invoke(AIStates.Idle);
+
+                _playerInputField.text = "";
+                _playerInputField.interactable = true;
+                _thinking = false;
+                _talking = false;
+
+                onFinished?.Invoke();
+            });
+        OrderBubbles();
     }
 
     private void CheckEndGame()
@@ -119,20 +131,20 @@ public class ChatHandler : MonoBehaviour
                 OrderBubbles();
             }, () =>
             {
-                switch (verdictBubble.Text)
+                if (verdictBubble.Text.ToLower().Contains("human"))
                 {
-                    case "Human":
-                        onVerdict?.Invoke(true);
-                        verdictBubble.SetText(verdictBubble.Text + "\nA(I)lan Turing Wins!");
-                        break;
-                    case "AI":
-                        verdictBubble.SetText(verdictBubble.Text + "\nYou Win!");
-                        onVerdict?.Invoke(false);
-                        break;
-                    default:
-                        //onVerdict?.Invoke(false);
-                        Debug.Log("AI didn't respond with a clear verdict");
-                        break;
+                    onVerdict?.Invoke(true);
+                    verdictBubble.SetText(verdictBubble.Text + "\nA(I)lan Turing Wins!");
+                }
+                else if (verdictBubble.Text.ToLower().Contains("ai"))
+                {
+                    verdictBubble.SetText(verdictBubble.Text + "\nYou Win!");
+                    onVerdict?.Invoke(false);
+                }
+                else
+                {
+                    //onVerdict?.Invoke(false);
+                    Debug.Log("AI didn't respond with a clear verdict");
                 }
                 _resetButton.gameObject.SetActive(true);
 
