@@ -143,22 +143,21 @@ public class ChatHandler : MonoBehaviour
     private void ResetGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        return;
-        for (int i = 0; i < _chatBubbles.Count; i++)
-        {
-            Destroy(_chatBubbles[i].gameObject);
-        }
-        _chatBubbles.Clear();
-        _resetButton.gameObject.SetActive(false);
+        //for (int i = 0; i < _chatBubbles.Count; i++)
+        //{
+        //    Destroy(_chatBubbles[i].gameObject);
+        //}
+        //_chatBubbles.Clear();
+        //_resetButton.gameObject.SetActive(false);
 
-        _exchanges = 0;
-        if (_inputPlaceholder) _inputPlaceholder.text = "Loading...";
+        //_exchanges = 0;
+        //if (_inputPlaceholder) _inputPlaceholder.text = "Loading...";
 
-        _ = _LLMCharacter.Warmup(() =>
-        {
-            _playerInputField.interactable = true;
-            if (_inputPlaceholder) _inputPlaceholder.text = "Enter Text...";
-        });
+        //_ = _LLMCharacter.Warmup(() =>
+        //{
+        //    _playerInputField.interactable = true;
+        //    if (_inputPlaceholder) _inputPlaceholder.text = "Enter Text...";
+        //});
     }
 
     private void OrderBubbles()
