@@ -125,21 +125,25 @@ public class ChatHandler : MonoBehaviour
         {
             _playerInputField.interactable = false;
             ChatBubble verdictBubble = AddVerdictBubble("...");
-            Task chatTask = _LLMCharacter.Chat("Choose whether you suspect I'm AI or Human based on your previous answers. Answer with only a single word, either AI or Human", s =>
+            Task chatTask = _LLMCharacter.Chat("Choose whether you suspect I'm AI or Human based on my previous answers. Answer with a scale of 0 to 100, 0 being human, and 100 being AI. Answer in the following format: x/100. Answer Only with the score, nothing else", s =>
             {
                 verdictBubble.SetText(s);
                 OrderBubbles();
             }, () =>
             {
-                if (verdictBubble.Text.ToLower().Contains("human"))
+                int charLoc = verdictBubble.Text.IndexOf("/", StringComparison.Ordinal);
+                if(int.TryParse(verdictBubble.Text.Substring(0, charLoc), out int result))
                 {
-                    onVerdict?.Invoke(true);
-                    verdictBubble.SetText(verdictBubble.Text + "\nA(I)lan Turing Wins!");
-                }
-                else if (verdictBubble.Text.ToLower().Contains("ai"))
-                {
-                    verdictBubble.SetText(verdictBubble.Text + "\nYou Win!");
-                    onVerdict?.Invoke(false);
+                    if(result <= 50)
+                    {
+                        onVerdict?.Invoke(true);
+                        verdictBubble.SetText(verdictBubble.Text + "\n You were more Human than AI. A(I)lan Turing Wins!");
+                    }
+                    else
+                    {
+                        onVerdict?.Invoke(false);
+                        verdictBubble.SetText(verdictBubble.Text + "\n You were more AI than Human. You Win!");
+                    }
                 }
                 else
                 {

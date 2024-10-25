@@ -353,8 +353,9 @@ MonoBehaviour:
     to be convinced. You are not easily fooled though, since you understand very
     well how a human or AI would answer. You'll start of being convinced the user
     is simply human. Use grammar, structure of sentences, and general questions of
-    knowledge to determine whether the user really is an AI. Don't use paralinguistic
-    cues."
+    knowledge to determine whether the user really is an AI. Take in account the
+    users' previous answers when prompted to guess whether they are human or AI.
+    Don't use paralinguistic cues."
   setNKeepToPrompt: 1
   chat: []
   grammarString: 
@@ -806,7 +807,7 @@ PrefabInstance:
     - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: _totalExchanges
-      value: 10
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7798487105960653808, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
@@ -826,7 +827,7 @@ PrefabInstance:
     - target: {fileID: 8234441012251114223, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -500.423
+      value: -582.1153
       objectReference: {fileID: 0}
     - target: {fileID: 8276730882806295691, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
