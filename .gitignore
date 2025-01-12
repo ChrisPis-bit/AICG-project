@@ -2,3 +2,5 @@ FMOD/aicg_fmod/Build/*
 FMOD/aicg_fmod/.cache
 FMOD/aicg_fmod/.user
 FMOD/aicg_fmod/.unsaved
+AICG-project/Assets/StreamingAssets/llama-3.2-3b-instruct-q4_k_m.gguf
+AICG-project/Assets/StreamingAssets/llama-3.2-3b-instruct-q4_k_m.gguf.meta

@@ -19,6 +19,8 @@ public class ChatHandler : MonoBehaviour
 {
     [SerializeField] private LLMCharacter _LLMCharacter;
     [SerializeField] private TMP_InputField _playerInputField;
+    [SerializeField] private TMP_Text _progressTextComponent;
+    [SerializeField] private string _progressText = "Progress: {0}/{1}";
     [SerializeField] private Color _playerBubbleColor;
     [SerializeField] private Color _AIBubbleColor;
     [SerializeField] private Color _verdictBubbleColor;
@@ -41,9 +43,12 @@ public class ChatHandler : MonoBehaviour
 
     private TMP_Text _inputPlaceholder;
 
+    public int QuestionCount => _totalExchanges;
+
 
     private void Start()
     {
+        _progressTextComponent.gameObject.SetActive(false);
         _inputPlaceholder = (TMP_Text)_playerInputField.placeholder;
         if (_inputPlaceholder) _inputPlaceholder.text = "Loading...";
 
@@ -54,8 +59,13 @@ public class ChatHandler : MonoBehaviour
             _playerInputField.interactable = true;
             if (_inputPlaceholder) _inputPlaceholder.text = "Enter Text...";
 
-            GetAIResponse("Hello, please introduce yourself and state your goal with this conversation.", null);
+            GetAIResponse("Hello, please introduce yourself and state your goal with this conversation.", () =>
+            {
+                _progressTextComponent.gameObject.SetActive(true);
+            });
         });
+
+        UpdateProgressText();
     }
 
     private void OnEnable()
@@ -70,6 +80,11 @@ public class ChatHandler : MonoBehaviour
         _playerInputField.onEndEdit.RemoveListener(InputChat);
     }
 
+    private void UpdateProgressText()
+    {
+        _progressTextComponent.text = string.Format(_progressText, _exchanges, _totalExchanges);
+    }
+
     private void InputChat(string input)
     {
         if (!_thinking && Input.GetKeyDown(KeyCode.Return))
@@ -79,6 +94,7 @@ public class ChatHandler : MonoBehaviour
             GetAIResponse(input, () =>
             {
                 _exchanges++;
+                UpdateProgressText();
                 CheckEndGame();
             });
         }
