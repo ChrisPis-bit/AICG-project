@@ -8,7 +8,7 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="MenuBody" class="menu-body" style="justify-content: center;">
                     <ui:Button text="START" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartButton" class="button" />
-                    <ui:Button text="EXIT" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartButton" class="button" />
+                    <ui:Button text="EXIT" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ExitButton" class="button" />
                 </ui:VisualElement>
                 <ui:VisualElement name="MenuFooter" class="menu-footer">
                     <ui:Label tabindex="-1" text="Sound Settings:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SoundText" style="-unity-text-align: upper-center;" />

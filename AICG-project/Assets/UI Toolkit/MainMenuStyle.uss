@@ -54,6 +54,17 @@
     border-bottom-color: rgb(255, 255, 255);
 }
 
+.button:focus {
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+}
+
+.button:active {
+    background-color: rgb(123, 123, 123);
+}
+
 .menu-body {
     flex-grow: 1;
     flex-shrink: 1;
@@ -86,6 +97,10 @@
 }
 
 .unity-base-slider__dragger:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+.unity-base-slider__dragger:focus {
     background-color: rgb(255, 255, 255);
 }
 
