@@ -39,15 +39,18 @@ public class ChatHandler : MonoBehaviour
     private bool _thinking = false;
     private bool _talking = false;
 
-    private int _exchanges = 0;
+    private int _currentExchange = 0;
 
     private TMP_Text _inputPlaceholder;
 
     public int QuestionCount => _totalExchanges;
 
+    public int[] Scores { get; private set; }
 
     private void Start()
     {
+        Scores = new int[_totalExchanges];
+
         _progressTextComponent.gameObject.SetActive(false);
         _inputPlaceholder = (TMP_Text)_playerInputField.placeholder;
         if (_inputPlaceholder) _inputPlaceholder.text = "Loading...";
@@ -82,7 +85,7 @@ public class ChatHandler : MonoBehaviour
 
     private void UpdateProgressText()
     {
-        _progressTextComponent.text = string.Format(_progressText, _exchanges, _totalExchanges);
+        _progressTextComponent.text = string.Format(_progressText, _currentExchange, _totalExchanges);
     }
 
     private void InputChat(string input)
@@ -91,9 +94,11 @@ public class ChatHandler : MonoBehaviour
         {
 
             AddPlayerBubble(input);
+
+            if (_currentExchange + 1 == _totalExchanges) input += " (Note: Do not ask anymore follow-up questions. This concludes the game. Do not remark on this note, only the text before.)";
             GetAIResponse(input, () =>
             {
-                _exchanges++;
+                _currentExchange++;
                 UpdateProgressText();
                 CheckEndGame();
             });
@@ -125,12 +130,16 @@ public class ChatHandler : MonoBehaviour
             {
                 onStateChange?.Invoke(AIStates.Idle);
 
-                _playerInputField.text = "";
-                _playerInputField.interactable = true;
-                _thinking = false;
-                _talking = false;
+                AskScore(score =>
+                {
+                    Scores[_currentExchange] = score;
+                    _playerInputField.text = "";
+                    _playerInputField.interactable = true;
+                    _thinking = false;
+                    _talking = false;
 
-                onFinished?.Invoke();
+                    onFinished?.Invoke();
+                });
             });
         OrderBubbles();
     }
@@ -155,41 +164,52 @@ public class ChatHandler : MonoBehaviour
 
     private void CheckEndGame()
     {
-        if (_exchanges >= _totalExchanges)
+        if (_currentExchange >= _totalExchanges)
         {
             _playerInputField.interactable = false;
-            ChatBubble verdictBubble = AddVerdictBubble("...");
-            Task chatTask = _LLMCharacter.Chat("Choose whether you suspect I'm AI or Human based on my previous answers. " +
+            int endScore = Scores[_totalExchanges - 1];
+            ChatBubble verdictBubble = AddVerdictBubble(endScore + "/100");
+
+            if (endScore <= 50)
+            {
+                onVerdict?.Invoke(true);
+                verdictBubble.SetText(verdictBubble.Text + "\n You were more Human than AI. A(I)lan Turing Wins!");
+            }
+            else
+            {
+                onVerdict?.Invoke(false);
+                verdictBubble.SetText(verdictBubble.Text + "\n You were more AI than Human. You Win!");
+            }
+            _resetButton.gameObject.SetActive(true);
+
+
+            OrderBubbles();
+        }
+    }
+
+    private void AskScore(Action<int> onComplete, Action<string> stringCallback = null)
+    {
+        string answer = "";
+
+        Task chatTask = _LLMCharacter.Chat("Choose whether you suspect I'm AI or Human based on my previous answers. " +
                 "Answer with a scale of 0 to 100, 0 being human, and 100 being AI. " +
                 "Answer in the following format: x/100. Give a short and final answer without follow up questions, please.", s =>
-            {
-                verdictBubble.SetText(s);
-                OrderBubbles();
-            }, () =>
-            {
-                if (GetScoreFromString(verdictBubble.Text, out int result))
                 {
-                    if (result <= 50)
+                    answer = s;
+                    stringCallback?.Invoke(s);
+                }, () =>
+                {
+                    if (GetScoreFromString(answer, out int result))
                     {
-                        onVerdict?.Invoke(true);
-                        verdictBubble.SetText(verdictBubble.Text + "\n You were more Human than AI. A(I)lan Turing Wins!");
+                        onComplete?.Invoke(result);
+                        Debug.Log("Score: " + result);
                     }
                     else
                     {
-                        onVerdict?.Invoke(false);
-                        verdictBubble.SetText(verdictBubble.Text + "\n You were more AI than Human. You Win!");
+                        Debug.Log("AI didn't respond with a clear verdict");
+                        onComplete?.Invoke(0);
                     }
-                }
-                else
-                {
-                    //onVerdict?.Invoke(false);
-                    Debug.Log("AI didn't respond with a clear verdict");
-                }
-                _resetButton.gameObject.SetActive(true);
-
-            });
-            OrderBubbles();
-        }
+                }, false);
     }
 
     private void ResetGame()
