@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=8fa38b4ba46bf7e4cbff240b0bfdbbd3&amp;type=3#MainMenuStyle" />
+    <ui:VisualElement name="Container" class="menu-container">
+        <ui:VisualElement name="MenuContainer" style="flex-grow: 1; align-items: center; justify-content: center;">
+            <ui:VisualElement name="Menu" class="menu" style="height: 446px; width: 862px; align-items: center;">
+                <ui:VisualElement name="MenuHeader" class="menu-header">
+                    <ui:Label tabindex="-1" text="Reverse Turing Test" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" class="title" />
+                </ui:VisualElement>
+                <ui:VisualElement name="MenuBody" class="menu-body" style="justify-content: center;">
+                    <ui:Button text="START" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartButton" class="button" />
+                    <ui:Button text="EXIT" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartButton" class="button" />
+                </ui:VisualElement>
+                <ui:VisualElement name="MenuFooter" class="menu-footer">
+                    <ui:Label tabindex="-1" text="Sound Settings:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SoundText" style="-unity-text-align: upper-center;" />
+                    <ui:Slider label="Volume" high-value="100" style="width: 488px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
