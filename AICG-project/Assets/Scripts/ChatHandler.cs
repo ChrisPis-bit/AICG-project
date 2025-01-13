@@ -119,22 +119,41 @@ public class ChatHandler : MonoBehaviour
         OrderBubbles();
     }
 
+    private bool GetScoreFromString(string text, out int score)
+    {
+        int charLoc = text.IndexOf("/", StringComparison.Ordinal);
+
+        // checks for 3,2 and 1 character before the first / instance, for different amount of digits such as 100, 50, or 9.
+        for (int i = 3; i >= 1; i--)
+        {
+            if (charLoc - i >= 0 && int.TryParse(text.Substring(charLoc - i, i), out int result))
+            {
+                score = result;
+                return true;
+            }
+        }
+
+        score = 0;
+        return false;
+    }
+
     private void CheckEndGame()
     {
         if (_exchanges >= _totalExchanges)
         {
             _playerInputField.interactable = false;
             ChatBubble verdictBubble = AddVerdictBubble("...");
-            Task chatTask = _LLMCharacter.Chat("Choose whether you suspect I'm AI or Human based on my previous answers. Answer with a scale of 0 to 100, 0 being human, and 100 being AI. Answer in the following format: x/100. Answer Only with the score, nothing else", s =>
+            Task chatTask = _LLMCharacter.Chat("Choose whether you suspect I'm AI or Human based on my previous answers. " +
+                "Answer with a scale of 0 to 100, 0 being human, and 100 being AI. " +
+                "Answer in the following format: x/100. Give a short and final answer without follow up questions, please.", s =>
             {
                 verdictBubble.SetText(s);
                 OrderBubbles();
             }, () =>
             {
-                int charLoc = verdictBubble.Text.IndexOf("/", StringComparison.Ordinal);
-                if(int.TryParse(verdictBubble.Text.Substring(0, charLoc), out int result))
+                if (GetScoreFromString(verdictBubble.Text, out int result))
                 {
-                    if(result <= 50)
+                    if (result <= 50)
                     {
                         onVerdict?.Invoke(true);
                         verdictBubble.SetText(verdictBubble.Text + "\n You were more Human than AI. A(I)lan Turing Wins!");

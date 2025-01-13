@@ -501,7 +501,7 @@ MonoBehaviour:
     is simply human. Use grammar, structure of sentences, and general questions of
     knowledge to determine whether the user really is an AI. Take in account the
     users' previous answers when prompted to guess whether they are human or AI.
-    Don't use paralinguistic cues."
+    Don't use paralinguistic cues. You identify as a human yourself, not as an AI."
   setNKeepToPrompt: 1
   chat: []
   grammarString: 
@@ -1107,7 +1107,7 @@ PrefabInstance:
     - target: {fileID: 8234441012251114223, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -466.9483
+      value: -466.9977
       objectReference: {fileID: 0}
     - target: {fileID: 8276730882806295691, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
