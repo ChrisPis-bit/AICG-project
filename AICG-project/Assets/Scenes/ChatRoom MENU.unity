@@ -881,7 +881,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &436340151
 Transform:
   m_ObjectHideFlags: 0
@@ -1137,7 +1137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &640946454
 Transform:
   m_ObjectHideFlags: 0
@@ -1983,12 +1983,12 @@ PrefabInstance:
     - target: {fileID: 902641411514756081, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 902641411514756081, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 902641411514756081, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
@@ -2108,22 +2108,27 @@ PrefabInstance:
     - target: {fileID: 7798487105960653808, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7798487105960653808, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8158774172638809083, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: m_Name
       value: ChatCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 8158774172638809083, guid: 35d792645fe8e984c90f1352be121be2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8234441012251114223, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -466.9975
+      value: -466.99762
       objectReference: {fileID: 0}
     - target: {fileID: 8276730882806295691, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
@@ -2180,6 +2185,85 @@ MonoBehaviour:
   _scoreSidebarText: {fileID: 1016024896396182645, guid: 4a61aba796354674bb1abc494a026e81,
     type: 3}
   _scoreSidebarTextHolder: {fileID: 348625902}
+--- !u!1001 &4016136939399565717
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2081307872209028619, guid: 3840616cd2fb566448e370f07e1f721c,
+        type: 3}
+      propertyPath: m_Name
+      value: ChatCanvasNew
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081307872209028619, guid: 3840616cd2fb566448e370f07e1f721c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2835572573094473413, guid: 3840616cd2fb566448e370f07e1f721c,
+        type: 3}
+      propertyPath: sourceAsset
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: b3fb38de84b9a8b43837b44881e31812,
+        type: 3}
+    - target: {fileID: 5885817305470258430, guid: 3840616cd2fb566448e370f07e1f721c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885817305470258430, guid: 3840616cd2fb566448e370f07e1f721c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885817305470258430, guid: 3840616cd2fb566448e370f07e1f721c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885817305470258430, guid: 3840616cd2fb566448e370f07e1f721c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885817305470258430, guid: 3840616cd2fb566448e370f07e1f721c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885817305470258430, guid: 3840616cd2fb566448e370f07e1f721c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885817305470258430, guid: 3840616cd2fb566448e370f07e1f721c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885817305470258430, guid: 3840616cd2fb566448e370f07e1f721c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885817305470258430, guid: 3840616cd2fb566448e370f07e1f721c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885817305470258430, guid: 3840616cd2fb566448e370f07e1f721c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3840616cd2fb566448e370f07e1f721c, type: 3}
 --- !u!1001 &4286262939750411964
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2266,6 +2350,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 1642077669107293570, guid: 72219f8a9c6d4fa41a6b330dc2328a02,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2686430767288639518, guid: 72219f8a9c6d4fa41a6b330dc2328a02,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2316,6 +2405,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6781040572578035764, guid: 72219f8a9c6d4fa41a6b330dc2328a02,
+        type: 3}
+      propertyPath: _volume
+      value: 0.8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2335,3 +2429,4 @@ SceneRoots:
   - {fileID: 1028126493}
   - {fileID: 905291641}
   - {fileID: 5425103888105869818}
+  - {fileID: 4016136939399565717}

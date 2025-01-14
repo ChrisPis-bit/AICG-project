@@ -45,6 +45,7 @@
     transition-duration: 0.25s;
     transition-timing-function: ease-in-out;
     background-color: rgb(38, 38, 38);
+    color: rgb(255, 255, 255);
 }
 
 .button:hover {
@@ -106,4 +107,9 @@
 
 .unity-base-slider__drag-container {
     justify-content: center;
+}
+
+.unity-label {
+    -unity-font: url("project://database/Assets/Fonts/ELEGANT%20TYPEWRITER%20Bold.ttf?fileID=12800000&guid=d6ef603025f43b542afe69d8a3f8274e&type=3#ELEGANT TYPEWRITER Bold");
+    -unity-font-definition: initial;
 }

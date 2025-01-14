@@ -1,0 +1,10 @@
+TextField #unity-text-input TextElement {
+    -unity-text-align: upper-left;
+    font-size: 25px;
+    white-space: normal;
+    text-overflow: clip;
+}
+
+TextField #unity-text-input {
+    background-color: rgba(0, 26, 40, 0.74);
+}
