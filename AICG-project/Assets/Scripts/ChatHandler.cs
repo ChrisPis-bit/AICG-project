@@ -1,5 +1,6 @@
 using LLMUnity;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,6 +58,8 @@ public class ChatHandler : MonoBehaviour
 
     public int[] Scores { get; private set; }
 
+    private float _lastScrollOffset = 0;
+
     private void Start()
     {
         Scores = new int[_totalExchanges];
@@ -101,8 +104,33 @@ public class ChatHandler : MonoBehaviour
 
     private void Update()
     {
-        //_scrollView.schedule.Execute(t=> _scrollView.verticalScroller.value = _scrollView.verticalScroller.highValue > 0 ? _scrollView.verticalScroller.highValue : 0);
+        if(_lastScrollOffset != _scrollView.verticalScroller.highValue)
+        {
+            StartCoroutine(LerpScrollView(_scrollView.verticalScroller.highValue - _lastScrollOffset));
+            _lastScrollOffset = _scrollView.verticalScroller.highValue;
+        }
+    }
 
+    private IEnumerator LerpScrollView(float amount)
+    {
+        const float seconds = .5f;
+        float lastVal = 0;
+        float t = 0;
+        while(t < 1)
+        {
+            t = Mathf.Clamp01(t + Time.deltaTime / seconds);
+
+            float y = -((t - 1) * (t - 1)) + 1;
+
+            float val = y * amount;
+
+            _scrollView.verticalScroller.value += val - lastVal;
+
+            lastVal = val;
+            yield return null;
+        }
+
+        yield return null;
     }
 
     private void UpdateProgressText()

@@ -88,8 +88,8 @@ TextField #unity-text-input {
     margin-left: 0;
 }
 
-.unity-scroll-view__content-container {
+/*.unity-scroll-view__content-container {
     flex-direction: column-reverse;
         display: flex;
         overflow-y: auto;
-}
+}*/
