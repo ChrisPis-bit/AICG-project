@@ -27,14 +27,6 @@ public class ChatHandler : MonoBehaviour
     [SerializeField] private string _inputFieldLabel = "InputField";
     [SerializeField] private TMP_Text _progressTextComponent;
     [SerializeField] private string _progressText = "Progress: {0}/{1}";
-    [SerializeField] private Color _playerBubbleColor;
-    [SerializeField] private Color _AIBubbleColor;
-    [SerializeField] private Color _verdictBubbleColor;
-    //[SerializeField] private float _bubbleWidthRatio = .7f;
-    //[SerializeField] private float _bubblePadding = 5.0f;
-    //[SerializeField] private ChatBubble _bubblePrefab;
-    //[SerializeField] private RectTransform _bubbleLayout;
-    //[SerializeField] private Button _resetButton;
     [SerializeField] private int _totalExchanges = 10;
 
     public event Action<AIStates> onStateChange;
@@ -49,10 +41,9 @@ public class ChatHandler : MonoBehaviour
 
     private bool _thinking = false;
     private bool _talking = false;
+    private bool _forceScroll = false;
 
     private int _currentExchange = 0;
-
-    private TMP_Text _inputPlaceholder;
 
     public int QuestionCount => _totalExchanges;
 
@@ -98,15 +89,23 @@ public class ChatHandler : MonoBehaviour
 
     private void OnDisable()
     {
-       // _resetButton.clicked -= ResetGame;
+        // _resetButton.clicked -= ResetGame;
         _sendButton.clicked -= InputChat;
     }
 
     private void Update()
     {
-        if(_lastScrollOffset != _scrollView.verticalScroller.highValue)
+        if (_lastScrollOffset != _scrollView.verticalScroller.highValue)
         {
-            StartCoroutine(LerpScrollView(_scrollView.verticalScroller.highValue - _lastScrollOffset));
+            if (_forceScroll)
+            {
+                _forceScroll = false;
+                StartCoroutine(LerpScrollView(_scrollView.verticalScroller.highValue - _scrollView.verticalScroller.value));
+            }
+            else if (Mathf.Abs(_lastScrollOffset - _scrollView.verticalScroller.value) < 1.0f) 
+            {
+                StartCoroutine(LerpScrollView(_scrollView.verticalScroller.highValue - _lastScrollOffset));
+            }
             _lastScrollOffset = _scrollView.verticalScroller.highValue;
         }
     }
@@ -116,7 +115,7 @@ public class ChatHandler : MonoBehaviour
         const float seconds = .5f;
         float lastVal = 0;
         float t = 0;
-        while(t < 1)
+        while (t < 1)
         {
             t = Mathf.Clamp01(t + Time.deltaTime / seconds);
 
@@ -299,15 +298,8 @@ public class ChatHandler : MonoBehaviour
     private Bubble AddPlayerBubble(string text)
     {
         Bubble bubble = CreateBubble(text);
-        //bubble.SetColor(_playerBubbleColor);
-        //bubble.RectTransform.anchorMin = new Vector2(0, 0);
-        //bubble.RectTransform.anchorMax = new Vector2(0, 0);
-        //bubble.RectTransform.pivot = new Vector2(0, bubble.RectTransform.pivot.y);
-
-        //bubble.SetText(text);
         bubble.SetPersonText("You");
         bubble.container.AddToClassList("bubble-right");
-
 
         return bubble;
     }
@@ -316,9 +308,6 @@ public class ChatHandler : MonoBehaviour
     {
 
         Bubble bubble = CreateBubble(text);
-        //bubble.SetColor(_AIBubbleColor);
-
-        //bubble.SetText(text);
         bubble.SetPersonText("A(I)lan Turing");
         bubble.container.AddToClassList("bubble-left");
 
@@ -329,9 +318,6 @@ public class ChatHandler : MonoBehaviour
     {
 
         Bubble bubble = CreateBubble(text);
-        //bubble.SetColor(_verdictBubbleColor);
-
-        //bubble.SetText(text);
         bubble.SetPersonText("Final Verdict");
 
         return bubble;
@@ -344,6 +330,7 @@ public class ChatHandler : MonoBehaviour
 
         _chatBubbles.Add(bubble);
         _scrollView.contentContainer.Add(bubble.container);
+        _forceScroll = true;
 
         return bubble;
     }
@@ -362,7 +349,6 @@ public class ChatHandler : MonoBehaviour
             container = prefab.Instantiate();
             mainText = container.Q<Label>("Text");
             personText = container.Q<Label>("PersonText");
-            //ersonText = container.Q<Label>();
         }
 
         public void SetText(string text)
