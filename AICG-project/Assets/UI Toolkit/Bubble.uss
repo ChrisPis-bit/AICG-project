@@ -1,0 +1,39 @@
+.bubble {
+    flex-grow: 1;
+    background-color: rgb(0, 57, 96);
+    color: rgb(255, 255, 255);
+    font-size: 25px;
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+}
+
+.bubble-left .bubble {
+    margin-right: 20%;
+    background-color: rgb(40, 88, 31);
+}
+
+.bubble-right .bubble {
+    margin-left: 20%;
+    background-color: rgb(91, 42, 0);
+}
+
+.bubble-right .bubble-label {
+    -unity-text-align: upper-right;
+}
+
+.bubble-left .bubble-label {
+    -unity-text-align: upper-left;
+}
+
+.bubble-label {
+}

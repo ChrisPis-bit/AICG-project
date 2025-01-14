@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Bubble.uss?fileID=7433441132597879392&amp;guid=13de5f2d3088af94ab41416e5faf6b53&amp;type=3#Bubble" />
+    <ui:VisualElement style="flex-grow: 1; margin-bottom: 30px;">
+        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PersonText" class="bubble-label" style="color: rgb(255, 255, 255);" />
+        <ui:VisualElement name="Bubble" class="bubble" style="padding-top: 5px; padding-right: 10px; padding-bottom: 5px; padding-left: 10px;">
+            <ui:Label tabindex="-1" text="LabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabel LabelLabelLabelLabelLabel LabelLabel Label Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Text" style="overflow: visible; white-space: normal; word-spacing: 5px; -unity-text-align: upper-left;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -887,6 +887,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
+      propertyPath: _bubble
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: 1ebdac6562c3f5c4797bb5735721dbc0,
+        type: 3}
+    - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
+        type: 3}
       propertyPath: _mainUI
       value: 
       objectReference: {fileID: 2083788780}

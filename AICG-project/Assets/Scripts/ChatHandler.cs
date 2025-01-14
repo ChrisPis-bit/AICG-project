@@ -22,7 +22,7 @@ public class ChatHandler : MonoBehaviour
     [SerializeField] private VisualTreeAsset _bubble;
     [SerializeField] private string _bubbleContainerLabel = "BubbleContainer";
     [SerializeField] private string _sendButtonLabel = "SendButton";
-    [SerializeField] private string _resetButtonLabel = "ResetButton";
+    //[SerializeField] private string _resetButtonLabel = "ResetButton";
     [SerializeField] private string _inputFieldLabel = "InputField";
     [SerializeField] private TMP_Text _progressTextComponent;
     [SerializeField] private string _progressText = "Progress: {0}/{1}";
@@ -39,12 +39,12 @@ public class ChatHandler : MonoBehaviour
     public event Action<AIStates> onStateChange;
     public event Action<bool> onVerdict;
 
-    private Button _resetButton;
+    //private Button _resetButton;
     private Button _sendButton;
     private TextField _inputTextField;
     private ScrollView _scrollView;
 
-    private List<ChatBubble> _chatBubbles = new();
+    private List<Bubble> _chatBubbles = new();
 
     private bool _thinking = false;
     private bool _talking = false;
@@ -66,7 +66,7 @@ public class ChatHandler : MonoBehaviour
         //_inputPlaceholder = _inputTextField.vale;
         //if (_inputPlaceholder) _inputPlaceholder.text = "Loading...";
 
-        _resetButton.visible = false;
+        //_resetButton.visible = false;
         _inputTextField.focusable = false;
         _ = _LLMCharacter.Warmup(() =>
         {
@@ -84,24 +84,25 @@ public class ChatHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        _resetButton = _mainUI.rootVisualElement.Q<Button>(_resetButtonLabel);
+        //_resetButton = _mainUI.rootVisualElement.Q<Button>(_resetButtonLabel);
         _sendButton = _mainUI.rootVisualElement.Q<Button>(_sendButtonLabel);
         _inputTextField = _mainUI.rootVisualElement.Q<TextField>(_inputFieldLabel);
         _scrollView = _mainUI.rootVisualElement.Q<ScrollView>(_bubbleContainerLabel);
 
-        _resetButton.clicked += ResetGame;
+        //_resetButton.clicked += ResetGame;
         _sendButton.clicked += InputChat;
     }
 
     private void OnDisable()
     {
-        _resetButton.clicked -= ResetGame;
+       // _resetButton.clicked -= ResetGame;
         _sendButton.clicked -= InputChat;
     }
 
     private void Update()
     {
-        
+        //_scrollView.schedule.Execute(t=> _scrollView.verticalScroller.value = _scrollView.verticalScroller.highValue > 0 ? _scrollView.verticalScroller.highValue : 0);
+
     }
 
     private void UpdateProgressText()
@@ -201,7 +202,7 @@ public class ChatHandler : MonoBehaviour
                 onVerdict?.Invoke(false);
                 verdictBubble.SetText(verdictBubble.Text + "\n You were more AI than Human. You Win!");
             }
-            _resetButton.visible = true;
+            //_resetButton.visible = true;
 
             //OrderBubbles();
         }
@@ -276,8 +277,9 @@ public class ChatHandler : MonoBehaviour
         //bubble.RectTransform.pivot = new Vector2(0, bubble.RectTransform.pivot.y);
 
         //bubble.SetText(text);
-        //bubble.SetPersonText("You");
-        _scrollView.contentContainer.Add(bubble.container);
+        bubble.SetPersonText("You");
+        bubble.container.AddToClassList("bubble-right");
+
 
         return bubble;
     }
@@ -289,8 +291,8 @@ public class ChatHandler : MonoBehaviour
         //bubble.SetColor(_AIBubbleColor);
 
         //bubble.SetText(text);
-        //bubble.SetPersonText("A(I)lan Turing");
-        _scrollView.contentContainer.Add(bubble.container);
+        bubble.SetPersonText("A(I)lan Turing");
+        bubble.container.AddToClassList("bubble-left");
 
         return bubble;
     }
@@ -302,8 +304,7 @@ public class ChatHandler : MonoBehaviour
         //bubble.SetColor(_verdictBubbleColor);
 
         //bubble.SetText(text);
-        //bubble.SetPersonText("Final Verdict");
-        _scrollView.contentContainer.Add(bubble.container);
+        bubble.SetPersonText("Final Verdict");
 
         return bubble;
     }
@@ -313,12 +314,15 @@ public class ChatHandler : MonoBehaviour
         Bubble bubble = new Bubble(_bubble);
         bubble.SetText(text);
 
+        _chatBubbles.Add(bubble);
+        _scrollView.contentContainer.Add(bubble.container);
+
         return bubble;
     }
 
     public class Bubble
     {
-        public Button mainText;
+        public Label mainText;
         public Label personText;
 
         public TemplateContainer container;
@@ -328,7 +332,8 @@ public class ChatHandler : MonoBehaviour
         public Bubble(VisualTreeAsset prefab)
         {
             container = prefab.Instantiate();
-            mainText = container.Q<Button>();
+            mainText = container.Q<Label>("Text");
+            personText = container.Q<Label>("PersonText");
             //ersonText = container.Q<Label>();
         }
 
