@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public enum AIStates
 {
@@ -18,21 +18,31 @@ public enum AIStates
 public class ChatHandler : MonoBehaviour
 {
     [SerializeField] private LLMCharacter _LLMCharacter;
-    [SerializeField] private TMP_InputField _playerInputField;
+    [SerializeField] private UIDocument _mainUI;
+    [SerializeField] private VisualTreeAsset _bubble;
+    [SerializeField] private string _bubbleContainerLabel = "BubbleContainer";
+    [SerializeField] private string _sendButtonLabel = "SendButton";
+    [SerializeField] private string _resetButtonLabel = "ResetButton";
+    [SerializeField] private string _inputFieldLabel = "InputField";
     [SerializeField] private TMP_Text _progressTextComponent;
     [SerializeField] private string _progressText = "Progress: {0}/{1}";
     [SerializeField] private Color _playerBubbleColor;
     [SerializeField] private Color _AIBubbleColor;
     [SerializeField] private Color _verdictBubbleColor;
-    [SerializeField] private float _bubbleWidthRatio = .7f;
-    [SerializeField] private float _bubblePadding = 5.0f;
-    [SerializeField] private ChatBubble _bubblePrefab;
-    [SerializeField] private RectTransform _bubbleLayout;
-    [SerializeField] private Button _resetButton;
+    //[SerializeField] private float _bubbleWidthRatio = .7f;
+    //[SerializeField] private float _bubblePadding = 5.0f;
+    //[SerializeField] private ChatBubble _bubblePrefab;
+    //[SerializeField] private RectTransform _bubbleLayout;
+    //[SerializeField] private Button _resetButton;
     [SerializeField] private int _totalExchanges = 10;
 
     public event Action<AIStates> onStateChange;
     public event Action<bool> onVerdict;
+
+    private Button _resetButton;
+    private Button _sendButton;
+    private TextField _inputTextField;
+    private ScrollView _scrollView;
 
     private List<ChatBubble> _chatBubbles = new();
 
@@ -52,15 +62,16 @@ public class ChatHandler : MonoBehaviour
         Scores = new int[_totalExchanges];
 
         _progressTextComponent.gameObject.SetActive(false);
-        _inputPlaceholder = (TMP_Text)_playerInputField.placeholder;
-        if (_inputPlaceholder) _inputPlaceholder.text = "Loading...";
 
-        _resetButton.gameObject.SetActive(false);
-        _playerInputField.interactable = false;
+        //_inputPlaceholder = _inputTextField.vale;
+        //if (_inputPlaceholder) _inputPlaceholder.text = "Loading...";
+
+        _resetButton.visible = false;
+        _inputTextField.focusable = false;
         _ = _LLMCharacter.Warmup(() =>
         {
-            _playerInputField.interactable = true;
-            if (_inputPlaceholder) _inputPlaceholder.text = "Enter Text...";
+            _inputTextField.focusable = true;
+            //if (_inputTextField != null) _inputTextField. = "Enter Text...";
 
             GetAIResponse("Hello, please introduce yourself and state your goal with this conversation.", () =>
             {
@@ -73,14 +84,24 @@ public class ChatHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        _resetButton.onClick.AddListener(ResetGame);
-        _playerInputField.onEndEdit.AddListener(InputChat);
+        _resetButton = _mainUI.rootVisualElement.Q<Button>(_resetButtonLabel);
+        _sendButton = _mainUI.rootVisualElement.Q<Button>(_sendButtonLabel);
+        _inputTextField = _mainUI.rootVisualElement.Q<TextField>(_inputFieldLabel);
+        _scrollView = _mainUI.rootVisualElement.Q<ScrollView>(_bubbleContainerLabel);
+
+        _resetButton.clicked += ResetGame;
+        _sendButton.clicked += InputChat;
     }
 
     private void OnDisable()
     {
-        _resetButton.onClick.RemoveListener(ResetGame);
-        _playerInputField.onEndEdit.RemoveListener(InputChat);
+        _resetButton.clicked -= ResetGame;
+        _sendButton.clicked -= InputChat;
+    }
+
+    private void Update()
+    {
+        
     }
 
     private void UpdateProgressText()
@@ -88,11 +109,11 @@ public class ChatHandler : MonoBehaviour
         _progressTextComponent.text = string.Format(_progressText, _currentExchange, _totalExchanges);
     }
 
-    private void InputChat(string input)
+    private void InputChat()
     {
-        if (!_thinking && Input.GetKeyDown(KeyCode.Return))
+        if (!_thinking)
         {
-
+            string input = _inputTextField.value;
             AddPlayerBubble(input);
 
             if (_currentExchange + 1 == _totalExchanges) input += " (Note: Do not ask anymore follow-up questions. This concludes the game. Do not remark on this note, only the text before.)";
@@ -111,11 +132,11 @@ public class ChatHandler : MonoBehaviour
             return;
 
         onStateChange?.Invoke(AIStates.Thinking);
-        ChatBubble AIBubble = AddAIBubble("...");
+        Bubble AIBubble = AddAIBubble("...");
         _thinking = true;
 
-        _playerInputField.interactable = false;
-        _playerInputField.text = "";
+        _inputTextField.focusable = false;
+        _inputTextField.value = "";
 
         Task chatTask = _LLMCharacter.Chat(input,
             s =>
@@ -125,7 +146,7 @@ public class ChatHandler : MonoBehaviour
 
                 _talking = true;
                 AIBubble.SetText(s);
-                OrderBubbles();
+                //OrderBubbles();
             }, () =>
             {
                 onStateChange?.Invoke(AIStates.Idle);
@@ -133,15 +154,15 @@ public class ChatHandler : MonoBehaviour
                 AskScore(score =>
                 {
                     Scores[_currentExchange] = score;
-                    _playerInputField.text = "";
-                    _playerInputField.interactable = true;
+                    _inputTextField.value = "";
+                    _inputTextField.focusable = true;
                     _thinking = false;
                     _talking = false;
 
                     onFinished?.Invoke();
                 });
             });
-        OrderBubbles();
+        // OrderBubbles();
     }
 
     private bool GetScoreFromString(string text, out int score)
@@ -166,9 +187,9 @@ public class ChatHandler : MonoBehaviour
     {
         if (_currentExchange >= _totalExchanges)
         {
-            _playerInputField.interactable = false;
+            _inputTextField.focusable = false;
             int endScore = Scores[_totalExchanges - 1];
-            ChatBubble verdictBubble = AddVerdictBubble(endScore + "/100");
+            Bubble verdictBubble = AddVerdictBubble(endScore + "/100");
 
             if (endScore <= 50)
             {
@@ -180,10 +201,9 @@ public class ChatHandler : MonoBehaviour
                 onVerdict?.Invoke(false);
                 verdictBubble.SetText(verdictBubble.Text + "\n You were more AI than Human. You Win!");
             }
-            _resetButton.gameObject.SetActive(true);
+            _resetButton.visible = true;
 
-
-            OrderBubbles();
+            //OrderBubbles();
         }
     }
 
@@ -232,70 +252,94 @@ public class ChatHandler : MonoBehaviour
         //});
     }
 
-    private void OrderBubbles()
-    {
-        _bubbleLayout.sizeDelta = new Vector2(_bubbleLayout.sizeDelta.x, _chatBubbles.Sum(b => _bubblePadding + b.RectTransform.sizeDelta.y));
+    //private void OrderBubbles()
+    //{
+    //    _bubbleLayout.sizeDelta = new Vector2(_bubbleLayout.sizeDelta.x, _chatBubbles.Sum(b => _bubblePadding + b.RectTransform.sizeDelta.y));
 
-        float curHeight = 0;
-        for (int i = _chatBubbles.Count - 1; i >= 0; i--)
+    //    float curHeight = 0;
+    //    for (int i = _chatBubbles.Count - 1; i >= 0; i--)
+    //    {
+    //        ChatBubble bubble = _chatBubbles[i];
+
+    //        curHeight += _bubblePadding;
+    //        bubble.RectTransform.anchoredPosition = new Vector3(0, curHeight);
+    //        curHeight += bubble.RectTransform.sizeDelta.y;
+    //    }
+    //}
+
+    private Bubble AddPlayerBubble(string text)
+    {
+        Bubble bubble = CreateBubble(text);
+        //bubble.SetColor(_playerBubbleColor);
+        //bubble.RectTransform.anchorMin = new Vector2(0, 0);
+        //bubble.RectTransform.anchorMax = new Vector2(0, 0);
+        //bubble.RectTransform.pivot = new Vector2(0, bubble.RectTransform.pivot.y);
+
+        //bubble.SetText(text);
+        //bubble.SetPersonText("You");
+        _scrollView.contentContainer.Add(bubble.container);
+
+        return bubble;
+    }
+
+    private Bubble AddAIBubble(string text)
+    {
+
+        Bubble bubble = CreateBubble(text);
+        //bubble.SetColor(_AIBubbleColor);
+
+        //bubble.SetText(text);
+        //bubble.SetPersonText("A(I)lan Turing");
+        _scrollView.contentContainer.Add(bubble.container);
+
+        return bubble;
+    }
+
+    private Bubble AddVerdictBubble(string text)
+    {
+
+        Bubble bubble = CreateBubble(text);
+        //bubble.SetColor(_verdictBubbleColor);
+
+        //bubble.SetText(text);
+        //bubble.SetPersonText("Final Verdict");
+        _scrollView.contentContainer.Add(bubble.container);
+
+        return bubble;
+    }
+
+    private Bubble CreateBubble(string text)
+    {
+        Bubble bubble = new Bubble(_bubble);
+        bubble.SetText(text);
+
+        return bubble;
+    }
+
+    public class Bubble
+    {
+        public Button mainText;
+        public Label personText;
+
+        public TemplateContainer container;
+
+        public string Text => mainText.text;
+
+        public Bubble(VisualTreeAsset prefab)
         {
-            ChatBubble bubble = _chatBubbles[i];
-
-            curHeight += _bubblePadding;
-            bubble.RectTransform.anchoredPosition = new Vector3(0, curHeight);
-            curHeight += bubble.RectTransform.sizeDelta.y;
+            container = prefab.Instantiate();
+            mainText = container.Q<Button>();
+            //ersonText = container.Q<Label>();
         }
-    }
 
-    private ChatBubble AddPlayerBubble(string text)
-    {
-        ChatBubble bubble = AddBubble();
-        bubble.SetColor(_playerBubbleColor);
-        bubble.RectTransform.anchorMin = new Vector2(0, 0);
-        bubble.RectTransform.anchorMax = new Vector2(0, 0);
-        bubble.RectTransform.pivot = new Vector2(0, bubble.RectTransform.pivot.y);
+        public void SetText(string text)
+        {
+            mainText.text = text;
+        }
 
-        bubble.SetText(text);
-        bubble.SetPersonText("You");
-
-        return bubble;
-    }
-
-    private ChatBubble AddAIBubble(string text)
-    {
-
-        ChatBubble bubble = AddBubble();
-        bubble.SetColor(_AIBubbleColor);
-        bubble.RectTransform.anchorMin = new Vector2(1, 0);
-        bubble.RectTransform.anchorMax = new Vector2(1, 0);
-        bubble.RectTransform.pivot = new Vector2(1, bubble.RectTransform.pivot.y);
-
-        bubble.SetText(text);
-        bubble.SetPersonText("A(I)lan Turing");
-
-        return bubble;
-    }
-
-    private ChatBubble AddVerdictBubble(string text)
-    {
-
-        ChatBubble bubble = AddBubble();
-        bubble.SetColor(_verdictBubbleColor);
-        bubble.RectTransform.anchorMin = new Vector2(.5f, 0);
-        bubble.RectTransform.anchorMax = new Vector2(.5f, 0);
-        bubble.RectTransform.pivot = new Vector2(.5f, bubble.RectTransform.pivot.y);
-
-        bubble.SetText(text);
-        bubble.SetPersonText("Final Verdict");
-
-        return bubble;
-    }
-
-    private ChatBubble AddBubble()
-    {
-        ChatBubble bubble = Instantiate(_bubblePrefab, _bubbleLayout);
-        _chatBubbles.Add(bubble);
-        bubble.RectTransform.sizeDelta = new Vector3(_bubbleWidthRatio * _bubbleLayout.rect.width, bubble.RectTransform.sizeDelta.y);
-        return bubble;
+        public void SetPersonText(string text)
+        {
+            personText.text = text;
+        }
     }
 }
