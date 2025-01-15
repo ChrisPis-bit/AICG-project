@@ -949,7 +949,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8158774172638809083, guid: 35d792645fe8e984c90f1352be121be2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 434486518738074296}
   m_SourcePrefab: {fileID: 100100000, guid: 35d792645fe8e984c90f1352be121be2, type: 3}
 --- !u!114 &434486518738074294 stripped
 MonoBehaviour:
@@ -957,12 +961,38 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 434486518738074293}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 434486518738074295}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40c1da10a204cc64584719a2fcb1e3c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &434486518738074295 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8158774172638809083, guid: 35d792645fe8e984c90f1352be121be2,
+    type: 3}
+  m_PrefabInstance: {fileID: 434486518738074293}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &434486518738074296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434486518738074295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 842dd72d5acb5e244b27ae066833bc99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _talkEvent:
+    Guid:
+      Data1: 1420656085
+      Data2: 1123065526
+      Data3: -2070793295
+      Data4: -1071428784
+    Path: event:/PlayerAudio
+  _chatHandler: {fileID: 434486518738074294}
 --- !u!1001 &4286262939750411964
 PrefabInstance:
   m_ObjectHideFlags: 0

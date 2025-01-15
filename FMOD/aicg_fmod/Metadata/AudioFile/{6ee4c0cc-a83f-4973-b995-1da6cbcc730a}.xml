@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{6ee4c0cc-a83f-4973-b995-1da6cbcc730a}">
+		<property name="assetPath">
+			<value>T6.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.24335600907029478</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{9673dea5-4a70-463e-8fa0-ef5eac7b06ec}</destination>
+		</relationship>
+	</object>
+</objects>
