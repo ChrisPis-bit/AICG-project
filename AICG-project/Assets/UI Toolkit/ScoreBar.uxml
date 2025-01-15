@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement style="background-color: rgba(243, 0, 0, 0.47); min-width: 50px; margin-left: auto; margin-right: auto; height: 100%;">
+        <ui:Label tabindex="-1" text="Q1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Text" style="position: absolute; top: 100%; color: rgb(255, 255, 255); font-size: 30px;" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -104,6 +104,9 @@ public class ChatHandler : MonoBehaviour
             }
             _lastScrollOffset = _scrollView.verticalScroller.highValue;
         }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+            InputChat();
     }
 
     private IEnumerator LerpValue(float amount, float time, Action<float> onValueChanged = null, Action<float> addValueCallback = null)
@@ -139,7 +142,7 @@ public class ChatHandler : MonoBehaviour
 
     private void InputChat()
     {
-        if (!_thinking)
+        if (!_thinking && _currentExchange < _totalExchanges)
         {
             string input = _inputTextField.value;
             AddPlayerBubble(input);
