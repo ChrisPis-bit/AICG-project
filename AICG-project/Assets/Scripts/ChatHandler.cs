@@ -25,8 +25,7 @@ public class ChatHandler : MonoBehaviour
     [SerializeField] private string _sendButtonLabel = "SendButton";
     //[SerializeField] private string _resetButtonLabel = "ResetButton";
     [SerializeField] private string _inputFieldLabel = "InputField";
-    [SerializeField] private TMP_Text _progressTextComponent;
-    [SerializeField] private string _progressText = "Progress: {0}/{1}";
+    [SerializeField] private string _progressBarLabel = "ProgressBar";
     [SerializeField] private int _totalExchanges = 10;
 
     public event Action<AIStates> onStateChange;
@@ -36,6 +35,7 @@ public class ChatHandler : MonoBehaviour
     private Button _sendButton;
     private TextField _inputTextField;
     private ScrollView _scrollView;
+    private ProgressBar _progressBar;
 
     private List<Bubble> _chatBubbles = new();
 
@@ -55,8 +55,6 @@ public class ChatHandler : MonoBehaviour
     {
         Scores = new int[_totalExchanges];
 
-        _progressTextComponent.gameObject.SetActive(false);
-
         //_inputPlaceholder = _inputTextField.vale;
         //if (_inputPlaceholder) _inputPlaceholder.text = "Loading...";
 
@@ -67,10 +65,7 @@ public class ChatHandler : MonoBehaviour
             _inputTextField.focusable = true;
             //if (_inputTextField != null) _inputTextField. = "Enter Text...";
 
-            GetAIResponse("Hello, please introduce yourself and state your goal with this conversation.", () =>
-            {
-                _progressTextComponent.gameObject.SetActive(true);
-            });
+            GetAIResponse("Hello, please introduce yourself and state your goal with this conversation.", null);
         });
 
         UpdateProgressText();
@@ -82,6 +77,7 @@ public class ChatHandler : MonoBehaviour
         _sendButton = _mainUI.rootVisualElement.Q<Button>(_sendButtonLabel);
         _inputTextField = _mainUI.rootVisualElement.Q<TextField>(_inputFieldLabel);
         _scrollView = _mainUI.rootVisualElement.Q<ScrollView>(_bubbleContainerLabel);
+        _progressBar = _mainUI.rootVisualElement.Q<ProgressBar>(_progressBarLabel);
 
         //_resetButton.clicked += ResetGame;
         _sendButton.clicked += InputChat;
@@ -100,30 +96,30 @@ public class ChatHandler : MonoBehaviour
             if (_forceScroll)
             {
                 _forceScroll = false;
-                StartCoroutine(LerpScrollView(_scrollView.verticalScroller.highValue - _scrollView.verticalScroller.value));
+                StartCoroutine(LerpValue(_scrollView.verticalScroller.highValue - _scrollView.verticalScroller.value, .5f, null, v => _scrollView.verticalScroller.value += v));
             }
-            else if (Mathf.Abs(_lastScrollOffset - _scrollView.verticalScroller.value) < 1.0f) 
+            else
             {
-                StartCoroutine(LerpScrollView(_scrollView.verticalScroller.highValue - _lastScrollOffset));
+                StartCoroutine(LerpValue(_scrollView.verticalScroller.highValue - _lastScrollOffset, .5f, null, v => _scrollView.verticalScroller.value += v));
             }
             _lastScrollOffset = _scrollView.verticalScroller.highValue;
         }
     }
 
-    private IEnumerator LerpScrollView(float amount)
+    private IEnumerator LerpValue(float amount, float time, Action<float> onValueChanged = null, Action<float> addValueCallback = null)
     {
-        const float seconds = .5f;
         float lastVal = 0;
         float t = 0;
         while (t < 1)
         {
-            t = Mathf.Clamp01(t + Time.deltaTime / seconds);
+            t = Mathf.Clamp01(t + Time.deltaTime / time);
 
             float y = -((t - 1) * (t - 1)) + 1;
 
             float val = y * amount;
 
-            _scrollView.verticalScroller.value += val - lastVal;
+            onValueChanged?.Invoke(val);
+            addValueCallback?.Invoke(val - lastVal);
 
             lastVal = val;
             yield return null;
@@ -134,7 +130,11 @@ public class ChatHandler : MonoBehaviour
 
     private void UpdateProgressText()
     {
-        _progressTextComponent.text = string.Format(_progressText, _currentExchange, _totalExchanges);
+        if (_currentExchange <= 0)
+            _progressBar.value = 0;
+
+       _progressBar.value = (float)_currentExchange / _totalExchanges;
+        StartCoroutine(LerpValue(1.0f / _totalExchanges, .5f, v => _progressBar.value = (float)(_currentExchange - 1) / _totalExchanges + v));
     }
 
     private void InputChat()
@@ -144,7 +144,7 @@ public class ChatHandler : MonoBehaviour
             string input = _inputTextField.value;
             AddPlayerBubble(input);
 
-            if (_currentExchange + 1 == _totalExchanges) input += " (Note: Do not ask anymore follow-up questions. This concludes the game. Do not remark on this note, only the text before.)";
+            if (_currentExchange + 1 == _totalExchanges) input += " (Note: Do not ask anymore follow-up questions. Do not remark on this note, only the text before.)";
             GetAIResponse(input, () =>
             {
                 _currentExchange++;
@@ -354,6 +354,7 @@ public class ChatHandler : MonoBehaviour
         public void SetText(string text)
         {
             mainText.text = text;
+            container.MarkDirtyRepaint();
         }
 
         public void SetPersonText(string text)

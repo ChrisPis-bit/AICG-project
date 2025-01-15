@@ -1,16 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="Bubble" src="project://database/Assets/UI%20Toolkit/Bubble.uxml?fileID=9197481963319205126&amp;guid=1ebdac6562c3f5c4797bb5735721dbc0&amp;type=3#Bubble" />
     <Style src="project://database/Assets/UI%20Toolkit/ChatCanvas.uss?fileID=7433441132597879392&amp;guid=303d35a32eb53c646b12c3520d538d11&amp;type=3#ChatCanvas" />
     <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=8fa38b4ba46bf7e4cbff240b0bfdbbd3&amp;type=3#MainMenuStyle" />
     <Style src="project://database/Assets/UI%20Toolkit/Bubble.uss?fileID=7433441132597879392&amp;guid=13de5f2d3088af94ab41416e5faf6b53&amp;type=3#Bubble" />
     <ui:VisualElement style="flex-grow: 1; align-items: flex-end; height: 100%; margin-bottom: 30px; -unity-font: url(&quot;project://database/Assets/Fonts/ELEGANT%20TYPEWRITER%20Bold.ttf?fileID=12800000&amp;guid=d6ef603025f43b542afe69d8a3f8274e&amp;type=3#ELEGANT TYPEWRITER Bold&quot;); -unity-font-definition: initial;">
-        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="BubbleContainer" mouse-wheel-scroll-size="60" usage-hints="None" vertical-page-size="-1" style="height: auto; width: 929px; flex-direction: column; justify-content: flex-start; align-self: auto; align-items: auto; -unity-text-align: upper-left; overflow: visible;">
-            <ui:Instance template="Bubble" name="Bubble" style="flex-direction: column-reverse;" />
-            <ui:Instance template="Bubble" name="Bubble" />
-            <ui:Instance template="Bubble" name="Bubble" />
-            <ui:Instance template="Bubble" name="Bubble" />
-            <ui:Instance template="Bubble" name="Bubble" style="flex-direction: column;" />
-        </ui:ScrollView>
+        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="BubbleContainer" mouse-wheel-scroll-size="60" usage-hints="None" vertical-page-size="-1" style="height: auto; width: 929px; flex-direction: column; justify-content: flex-start; align-self: auto; align-items: auto; -unity-text-align: upper-left; overflow: visible;" />
     </ui:VisualElement>
     <ui:VisualElement style="flex-grow: 1; align-items: center; -unity-font: url(&quot;project://database/Assets/Fonts/ELEGANT%20TYPEWRITER%20Bold.ttf?fileID=12800000&amp;guid=d6ef603025f43b542afe69d8a3f8274e&amp;type=3#ELEGANT TYPEWRITER Bold&quot;); -unity-font-definition: initial;">
         <ui:VisualElement name="VisualElement" style="flex-grow: 1; height: auto; justify-content: flex-end; align-items: center; width: 1295px;">
@@ -18,7 +11,7 @@
                 <ui:TextField picking-mode="Ignore" focusable="true" multiline="true" name="InputField" class="panel selectable" style="align-self: stretch; height: 100%; flex-grow: 1; color: rgb(255, 255, 255); flex-wrap: wrap; white-space: normal; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                 <ui:Button text="Send" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SendButton" class="button" style="height: 100%;" />
             </ui:VisualElement>
-            <ui:ProgressBar value="42.54" title="my-progress" name="ProgressBar" class="panel" style="align-self: stretch; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; overflow: hidden;" />
+            <ui:ProgressBar value="0.4" title="my-progress" name="ProgressBar" high-value="1" class="panel" style="align-self: stretch; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; overflow: hidden;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
