@@ -1,0 +1,8 @@
+.bar{
+	background-color: rgba(243,0,0,0.5);
+
+}
+
+.bar:hover{
+	background-color: rgba(243,100,100,0.7);
+}
