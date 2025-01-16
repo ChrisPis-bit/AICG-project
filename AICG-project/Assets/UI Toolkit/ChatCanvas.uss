@@ -4,6 +4,10 @@ TextField #unity-text-input TextElement {
     white-space: normal;
 }
 
+TextField{
+    --unity-cursor-color: white;
+}
+
 TextField #unity-text-input {
     background-color: rgba(0, 26, 40, 0.74);
     margin-top: 0;

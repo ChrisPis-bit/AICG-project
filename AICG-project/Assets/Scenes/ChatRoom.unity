@@ -880,6 +880,11 @@ PrefabInstance:
       propertyPath: _LLMCharacter
       value: 
       objectReference: {fileID: 436340152}
+    - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
+        type: 3}
+      propertyPath: _totalExchanges
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8158774172638809083, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: m_Name

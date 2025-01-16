@@ -15,6 +15,10 @@
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);
     border-bottom-color: rgb(255, 255, 255);
+    transition-property: scale;
+    transition-duration: 0s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
 }
 
 .bubble-left .bubble {

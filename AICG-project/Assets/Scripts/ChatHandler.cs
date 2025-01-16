@@ -45,25 +45,28 @@ public class ChatHandler : MonoBehaviour
 
     private int _currentExchange = 0;
 
+    private float _lastScrollOffset = 0;
+
     public int QuestionCount => _totalExchanges;
 
     public int[] Scores { get; private set; }
 
-    private float _lastScrollOffset = 0;
+    public ScrollView ScrollView => _scrollView;
+    public List<Bubble> playerBubbles = new();
 
     private void Start()
     {
         Scores = new int[_totalExchanges];
 
         //_inputPlaceholder = _inputTextField.vale;
-        //if (_inputPlaceholder) _inputPlaceholder.text = "Loading...";
+        SetPlaceholderText("Loading...");
+        SetPlaceholderCallback();
 
         //_resetButton.visible = false;
         _inputTextField.focusable = false;
         _ = _LLMCharacter.Warmup(() =>
         {
             _inputTextField.focusable = true;
-            //if (_inputTextField != null) _inputTextField. = "Enter Text...";
 
             GetAIResponse("Hello, please introduce yourself and state your goal with this conversation.", null);
         });
@@ -104,9 +107,6 @@ public class ChatHandler : MonoBehaviour
             }
             _lastScrollOffset = _scrollView.verticalScroller.highValue;
         }
-
-        if (Input.GetKeyDown(KeyCode.Return))
-            InputChat();
     }
 
     private IEnumerator LerpValue(float amount, float time, Action<float> onValueChanged = null, Action<float> addValueCallback = null)
@@ -136,7 +136,7 @@ public class ChatHandler : MonoBehaviour
         if (_currentExchange <= 0)
             _progressBar.value = 0;
 
-       _progressBar.value = (float)_currentExchange / _totalExchanges;
+        _progressBar.value = (float)_currentExchange / _totalExchanges;
         StartCoroutine(LerpValue(1.0f / _totalExchanges, .5f, v => _progressBar.value = (float)(_currentExchange - 1) / _totalExchanges + v));
     }
 
@@ -169,6 +169,9 @@ public class ChatHandler : MonoBehaviour
         _inputTextField.focusable = false;
         _inputTextField.value = "";
 
+        SetPlaceholderText("Alan is thinking...");
+        SetPlaceholderVisibility(true);
+
         Task chatTask = _LLMCharacter.Chat(input,
             s =>
             {
@@ -189,6 +192,7 @@ public class ChatHandler : MonoBehaviour
                     _inputTextField.focusable = true;
                     _thinking = false;
                     _talking = false;
+                    SetPlaceholderText("Enter text...");
 
                     onFinished?.Invoke();
                 });
@@ -225,7 +229,7 @@ public class ChatHandler : MonoBehaviour
             if (endScore <= 50)
             {
                 onVerdict?.Invoke(true);
-                verdictBubble.SetText(verdictBubble.Text + "\n You were more Human than AI. A(I)lan Turing Wins!");
+                verdictBubble.SetText(verdictBubble.Text + "\n You were more Human than AI. Alan Turing Wins!");
             }
             else
             {
@@ -300,9 +304,9 @@ public class ChatHandler : MonoBehaviour
 
     private Bubble AddPlayerBubble(string text)
     {
-        Bubble bubble = CreateBubble(text);
+        Bubble bubble = CreateBubble(text, "bubble-right");
         bubble.SetPersonText("You");
-        bubble.container.AddToClassList("bubble-right");
+        playerBubbles.Add(bubble);
 
         return bubble;
     }
@@ -310,9 +314,8 @@ public class ChatHandler : MonoBehaviour
     private Bubble AddAIBubble(string text)
     {
 
-        Bubble bubble = CreateBubble(text);
-        bubble.SetPersonText("A(I)lan Turing");
-        bubble.container.AddToClassList("bubble-left");
+        Bubble bubble = CreateBubble(text, "bubble-left");
+        bubble.SetPersonText("Alan Turing");
 
         return bubble;
     }
@@ -326,9 +329,9 @@ public class ChatHandler : MonoBehaviour
         return bubble;
     }
 
-    private Bubble CreateBubble(string text)
+    private Bubble CreateBubble(string text, string className = null)
     {
-        Bubble bubble = new Bubble(_bubble);
+        Bubble bubble = new Bubble(_bubble, className);
         bubble.SetText(text);
 
         _chatBubbles.Add(bubble);
@@ -338,6 +341,35 @@ public class ChatHandler : MonoBehaviour
         return bubble;
     }
 
+    public void SetPlaceholderCallback()
+    {
+        string placeholderClass = TextField.ussClassName + "__placeholder";
+
+        onFocusOut();
+        _inputTextField.RegisterCallback<FocusInEvent>(evt => onFocusIn());
+        _inputTextField.RegisterCallback<FocusOutEvent>(evt => onFocusOut());
+
+        void onFocusIn()
+        {
+            SetPlaceholderVisibility(false);
+        }
+
+        void onFocusOut()
+        {
+            if (string.IsNullOrEmpty(_inputTextField.text))
+            {
+                SetPlaceholderVisibility(true);
+            }
+        }
+    }
+
+    public void SetPlaceholderText(string text)
+    {
+        _inputTextField.Q<Label>("PlaceHolder").text = text;
+    }
+
+    public void SetPlaceholderVisibility(bool visible) => _inputTextField.Q<Label>("PlaceHolder").visible = visible;
+
     public class Bubble
     {
         public Label mainText;
@@ -345,13 +377,19 @@ public class ChatHandler : MonoBehaviour
 
         public TemplateContainer container;
 
+        public VisualElement mask;
+
+        public Color? origColor;
+
         public string Text => mainText.text;
 
-        public Bubble(VisualTreeAsset prefab)
+        public Bubble(VisualTreeAsset prefab, string className = null)
         {
             container = prefab.Instantiate();
             mainText = container.Q<Label>("Text");
+            mask = container.Q<VisualElement>("Mask");
             personText = container.Q<Label>("PersonText");
+            if (className != null) container.AddToClassList(className);
         }
 
         public void SetText(string text)
@@ -363,6 +401,13 @@ public class ChatHandler : MonoBehaviour
         public void SetPersonText(string text)
         {
             personText.text = text;
+        }
+
+        public void PlaySelectAnimation(GameObject coroutineObject)
+        {
+            if (origColor == null) origColor = mask.style.backgroundColor.value;
+
+            LeanTween.value(coroutineObject, origColor.Value, Color.white, .5f).setEase(LeanTweenType.easeInOutQuad).setLoopPingPong(1).setOnUpdateColor(c => mask.style.backgroundColor = c);
         }
     }
 }

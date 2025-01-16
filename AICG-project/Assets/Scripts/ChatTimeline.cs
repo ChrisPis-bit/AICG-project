@@ -28,7 +28,8 @@ public class ChatTimeline : MonoBehaviour
 
         for (int i = 0; i < _chatHandler.QuestionCount; i++)
         {
-            _bars[i] = new ScoreBar(_scoreBar, i + 1, _scoreBarHolder);
+            ScoreBar bar = new ScoreBar(_scoreBar, i + 1, _scoreBarHolder);
+            _bars[i] = bar;
         }
 
         for (int i = 0; i < _chatHandler.QuestionCount; i++)
@@ -51,6 +52,7 @@ public class ChatTimeline : MonoBehaviour
     {
         for (int i = 0; i < _chatHandler.QuestionCount; i++)
         {
+            _bars[i].BindQuestion(_chatHandler.playerBubbles[i], _chatHandler.ScrollView, gameObject);
             _bars[i].SetBarHeight(_chatHandler.Scores[i]);
         }
 
@@ -61,6 +63,7 @@ public class ChatTimeline : MonoBehaviour
     {
         public TemplateContainer container;
         public Label text;
+        public ChatHandler.Bubble bubble;
 
         public ScoreBar(VisualTreeAsset prefab, int question, VisualElement parent)
         {
@@ -77,6 +80,17 @@ public class ChatTimeline : MonoBehaviour
         public void SetBarHeight(int score)
         {
             container.style.height = Length.Percent(score);
+        }
+
+        public void BindQuestion(ChatHandler.Bubble bubble, ScrollView scrollView, GameObject obj)
+        {
+            this.bubble = bubble;
+            container.AddManipulator(new Clickable(() =>
+            {
+                scrollView.ScrollTo(this.bubble.container);
+                this.bubble.PlaySelectAnimation(obj);
+            }));
+
         }
     }
 }
