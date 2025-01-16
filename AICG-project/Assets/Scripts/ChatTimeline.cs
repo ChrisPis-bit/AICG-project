@@ -11,6 +11,7 @@ public class ChatTimeline : MonoBehaviour
     [SerializeField] private UIDocument _mainUI;
     [SerializeField] private string _timelineParentLabel = "TimelineParent";
     [SerializeField] private string _scoreBarHolderLabel = "ScoreBarHolder";
+    [SerializeField] private bool _isTimelineVisible = false;
 
     private ScoreBar[] _bars;
 
@@ -22,7 +23,7 @@ public class ChatTimeline : MonoBehaviour
         _timelineParent = _mainUI.rootVisualElement.Q<VisualElement>(_timelineParentLabel);
         _scoreBarHolder = _mainUI.rootVisualElement.Q<VisualElement>(_scoreBarHolderLabel);
 
-        _timelineParent.visible = false;
+        _timelineParent.visible = _isTimelineVisible;
 
         _bars = new ScoreBar[_chatHandler.QuestionCount];
 

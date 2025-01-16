@@ -4,7 +4,7 @@ TextField #unity-text-input TextElement {
     white-space: normal;
 }
 
-TextField{
+TextField {
     --unity-cursor-color: white;
 }
 
@@ -57,7 +57,7 @@ TextField #unity-text-input {
     border-bottom-color: rgb(255, 255, 255);
 }
 
-.custom-scroll{
+.custom-scroll {
     display: flex;
     flex-direction: column-reverse;
     overflow-y: auto;
@@ -92,8 +92,37 @@ TextField #unity-text-input {
     margin-left: 0;
 }
 
-/*.unity-scroll-view__content-container {
-    flex-direction: column-reverse;
-        display: flex;
-        overflow-y: auto;
-}*/
+#GearIcon:hover {
+    rotate: 0.5turn;
+}
+
+.gear-icon {
+    background-image: url("project://database/Assets/UI%20Toolkit/MenuImages/gear-icon.png?fileID=21300000&guid=56e2645b9ec4f10458523efc64cfd9e4&type=3#gear-icon");
+    -unity-background-scale-mode: scale-to-fit;
+    background-color: rgba(188, 188, 188, 0);
+    height: 75px;
+    width: 75px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    transition-property: rotate;
+    transition-duration: 1s;
+    transition-timing-function: ease-out-cubic;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}

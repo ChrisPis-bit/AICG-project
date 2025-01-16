@@ -1,8 +1,9 @@
-.bar{
-	background-color: rgba(243,0,0,0.5);
-
+.bar {
+    background-color: rgba(243, 0, 0, 0.5);
+    margin-right: auto;
+    margin-left: auto;
 }
 
-.bar:hover{
-	background-color: rgba(243,100,100,0.7);
+.bar:hover {
+    background-color: rgba(243, 100, 100, 0.7);
 }
