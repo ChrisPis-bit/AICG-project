@@ -203,7 +203,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0691934, y: -0.060554184, z: 0.0042078122, w: 0.99575496}
-  m_LocalPosition: {x: 0.54, y: 1.61, z: -10.33}
+  m_LocalPosition: {x: 0.9, y: 1.61, z: -9.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -353,9 +353,10 @@ MonoBehaviour:
     to be convinced. You are not easily fooled though, since you understand very
     well how a human or AI would answer. You'll start of being convinced the user
     is simply human. Use grammar, structure of sentences, and general questions of
-    knowledge to determine whether the user really is an AI. Take in account the
-    users' previous answers when prompted to guess whether they are human or AI.
-    Don't use paralinguistic cues. You identify as a human yourself, not as an AI."
+    knowledge to determine whether the user really is an AI. Try and follow up with
+    a single question, don't make your answers too long. Take in account the users'
+    previous answers when prompted to guess whether they are human or AI. Don't use
+    paralinguistic cues. You identify as a human yourself, not as an AI."
   setNKeepToPrompt: 1
   chat: []
   grammarString: 
@@ -883,7 +884,7 @@ PrefabInstance:
     - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: _totalExchanges
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8158774172638809083, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
@@ -920,6 +921,21 @@ PrefabInstance:
       propertyPath: _chatHandler
       value: 
       objectReference: {fileID: 434486518738074294}
+    - target: {fileID: 4354300353870559472, guid: 210e60b060a90964c856fa20ef63e480,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9888865
+      objectReference: {fileID: 0}
+    - target: {fileID: 4354300353870559472, guid: 210e60b060a90964c856fa20ef63e480,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.14867245
+      objectReference: {fileID: 0}
+    - target: {fileID: 4354300353870559472, guid: 210e60b060a90964c856fa20ef63e480,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -17.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5098176964361961946, guid: 210e60b060a90964c856fa20ef63e480,
         type: 3}
       propertyPath: m_LocalPosition.x
