@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/ScoreBar.uss?fileID=7433441132597879392&amp;guid=183512aa6bb86724ab80989e4b1f157e&amp;type=3#ScoreBar" />
-    <ui:VisualElement name="VisualElement" class="bar" style="min-width: 50px; margin-left: auto; margin-right: auto; height: 100%;">
+    <ui:VisualElement name="Bar" class="bar" style="min-width: 50px; margin-left: auto; margin-right: auto; height: 100%;">
         <ui:Label tabindex="-1" text="Q1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Text" style="position: absolute; top: 100%; color: rgb(255, 255, 255); font-size: 30px;" />
     </ui:VisualElement>
 </ui:UXML>

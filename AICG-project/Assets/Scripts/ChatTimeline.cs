@@ -35,7 +35,7 @@ public class ChatTimeline : MonoBehaviour
 
         for (int i = 0; i < _chatHandler.QuestionCount; i++)
         {
-            _bars[i].SetBarHeight(50);
+            _bars[i].SetBarHeight(0);
         }
     }
 
@@ -69,8 +69,7 @@ public class ChatTimeline : MonoBehaviour
         public ScoreBar(VisualTreeAsset prefab, int question, VisualElement parent)
         {
             container = prefab.Instantiate();
-            container.style.marginRight = Length.Auto();
-            container.style.marginLeft = Length.Auto();
+            container.AddToClassList("bar-parent");
             text = container.Q<Label>("Text");
 
             text.text = "Q" + question.ToString();

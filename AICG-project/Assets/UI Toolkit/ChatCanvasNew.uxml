@@ -1,5 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="ScoreBar" src="project://database/Assets/UI%20Toolkit/ScoreBar.uxml?fileID=9197481963319205126&amp;guid=680cea0a3b1470a4c907c74f20f2ca17&amp;type=3#ScoreBar" />
     <Style src="project://database/Assets/UI%20Toolkit/ChatCanvas.uss?fileID=7433441132597879392&amp;guid=303d35a32eb53c646b12c3520d538d11&amp;type=3#ChatCanvas" />
     <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=8fa38b4ba46bf7e4cbff240b0bfdbbd3&amp;type=3#MainMenuStyle" />
     <Style src="project://database/Assets/UI%20Toolkit/Bubble.uss?fileID=7433441132597879392&amp;guid=13de5f2d3088af94ab41416e5faf6b53&amp;type=3#Bubble" />
@@ -16,7 +15,6 @@
                     <ui:Label tabindex="-1" text="50%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="50Percentage" style="position: absolute; color: rgb(255, 255, 255); right: 100%; bottom: 50%; font-size: 30px; translate: 0 50%;" />
                     <ui:Label tabindex="-1" text="75%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="75Percentage" style="position: absolute; color: rgb(255, 255, 255); right: 100%; bottom: 75%; font-size: 30px; translate: 0 50%;" />
                     <ui:Label tabindex="-1" text="100%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="100Percentage" style="position: absolute; color: rgb(255, 255, 255); right: 100%; font-size: 30px; bottom: 100%; transform-origin: top; translate: 0 50%;" />
-                    <ui:Instance template="ScoreBar" name="ScoreBar" class="bar" style="height: 180px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
