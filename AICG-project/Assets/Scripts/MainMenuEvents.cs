@@ -7,7 +7,7 @@ using FMODUnity;
 
 public class MainMenuEvents : MonoBehaviour
 {
-
+    //
     private UIDocument _document;
     private Button _startButton;
     private Button _exitButton;
@@ -27,6 +27,7 @@ public class MainMenuEvents : MonoBehaviour
 
         // slider
         _slider = _document.rootVisualElement.Q<Slider>("VolumeSlider");
+
         _slider.RegisterValueChangedCallback(OnSliderChange);
         RuntimeManager.StudioSystem.getParameterByName("MasterVolume", out _volume);
         _slider.value = _volume;
