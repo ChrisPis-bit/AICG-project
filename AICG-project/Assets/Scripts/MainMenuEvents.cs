@@ -20,14 +20,15 @@ public class MainMenuEvents : MonoBehaviour
 
     private void Awake(){
         _document = GetComponent<UIDocument>();
-        _startButton = _document.rootVisualElement.Q<Button>("StartButton") as Button;
-        _startButton.RegisterCallback<ClickEvent>(OnStartGameClick);
-        _exitButton = _document.rootVisualElement.Q<Button>("ExitButton") as Button;
-        _exitButton.RegisterCallback<ClickEvent>(onGameExitClick);
+        _startButton = _document.rootVisualElement.Q<Button>("StartButton");
+        _startButton?.RegisterCallback<ClickEvent>(OnStartGameClick);
+        _exitButton = _document.rootVisualElement.Q<Button>("ExitButton");
+        _exitButton?.RegisterCallback<ClickEvent>(onGameExitClick);
 
         // slider
-        _slider = _document.rootVisualElement.Q<Slider>("VolumeSlider") as Slider;
+        _slider = _document.rootVisualElement.Q<Slider>("VolumeSlider");
         _slider.RegisterValueChangedCallback(OnSliderChange);
+        RuntimeManager.StudioSystem.getParameterByName("MasterVolume", out _volume);
         _slider.value = _volume;
 
 
@@ -38,7 +39,7 @@ public class MainMenuEvents : MonoBehaviour
     }
 
     private void OnDisable(){
-        _startButton.UnregisterCallback<ClickEvent>(OnStartGameClick);
+        _startButton?.UnregisterCallback<ClickEvent>(OnStartGameClick);
     }
 
     private void OnStartGameClick(ClickEvent evt){

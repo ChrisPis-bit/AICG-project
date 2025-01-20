@@ -1,8 +1,19 @@
-.bar{
-	background-color: rgba(243,0,0,0.5);
-
+.bar {
+    background-color: rgba(243, 0, 0, 0.5);
+    margin-right: auto;
+    margin-left: auto;
+    transition-property: height;
+    transition-duration: 2s;
+    transition-timing-function: ease-out;
 }
 
-.bar:hover{
-	background-color: rgba(243,100,100,0.7);
+.bar:hover {
+    background-color: rgba(243, 100, 100, 0.7);
+}
+
+.bar-parent {
+    margin-right: auto;
+    margin-left: auto;
+    transition-duration: 2s;
+    transition-timing-function: ease-out-cubic;
 }

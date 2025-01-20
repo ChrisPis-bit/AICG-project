@@ -11,6 +11,7 @@ public class ChatTimeline : MonoBehaviour
     [SerializeField] private UIDocument _mainUI;
     [SerializeField] private string _timelineParentLabel = "TimelineParent";
     [SerializeField] private string _scoreBarHolderLabel = "ScoreBarHolder";
+    [SerializeField] private bool _isTimelineVisible = false;
 
     private ScoreBar[] _bars;
 
@@ -22,7 +23,7 @@ public class ChatTimeline : MonoBehaviour
         _timelineParent = _mainUI.rootVisualElement.Q<VisualElement>(_timelineParentLabel);
         _scoreBarHolder = _mainUI.rootVisualElement.Q<VisualElement>(_scoreBarHolderLabel);
 
-        _timelineParent.visible = false;
+        _timelineParent.visible = _isTimelineVisible;
 
         _bars = new ScoreBar[_chatHandler.QuestionCount];
 
@@ -34,7 +35,7 @@ public class ChatTimeline : MonoBehaviour
 
         for (int i = 0; i < _chatHandler.QuestionCount; i++)
         {
-            _bars[i].SetBarHeight(50);
+            _bars[i].SetBarHeight(0);
         }
     }
 
@@ -68,8 +69,7 @@ public class ChatTimeline : MonoBehaviour
         public ScoreBar(VisualTreeAsset prefab, int question, VisualElement parent)
         {
             container = prefab.Instantiate();
-            container.style.marginRight = Length.Auto();
-            container.style.marginLeft = Length.Auto();
+            container.AddToClassList("bar-parent");
             text = container.Q<Label>("Text");
 
             text.text = "Q" + question.ToString();

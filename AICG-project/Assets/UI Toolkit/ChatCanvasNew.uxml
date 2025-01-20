@@ -2,27 +2,37 @@
     <Style src="project://database/Assets/UI%20Toolkit/ChatCanvas.uss?fileID=7433441132597879392&amp;guid=303d35a32eb53c646b12c3520d538d11&amp;type=3#ChatCanvas" />
     <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=8fa38b4ba46bf7e4cbff240b0bfdbbd3&amp;type=3#MainMenuStyle" />
     <Style src="project://database/Assets/UI%20Toolkit/Bubble.uss?fileID=7433441132597879392&amp;guid=13de5f2d3088af94ab41416e5faf6b53&amp;type=3#Bubble" />
+    <Style src="project://database/Assets/UI%20Toolkit/ScoreBar.uss?fileID=7433441132597879392&amp;guid=183512aa6bb86724ab80989e4b1f157e&amp;type=3#ScoreBar" />
     <ui:VisualElement style="flex-grow: 1; align-items: flex-end; height: 100%; margin-bottom: 30px; -unity-font: url(&quot;project://database/Assets/Fonts/ELEGANT%20TYPEWRITER%20Bold.ttf?fileID=12800000&amp;guid=d6ef603025f43b542afe69d8a3f8274e&amp;type=3#ELEGANT TYPEWRITER Bold&quot;); -unity-font-definition: initial; flex-direction: row;">
-        <ui:VisualElement name="GraphContainer" style="flex-grow: 1; height: 100%; background-color: rgba(0, 0, 0, 0.59); margin-right: 0; margin-left: 20px; margin-top: 20px;">
-            <ui:VisualElement name="Graph" style="flex-grow: 1; margin-bottom: 100px; margin-left: 151px; background-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgb(255, 255, 255); border-left-color: rgb(255, 255, 255); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; flex-direction: row; align-items: flex-end;">
-                <ui:Label tabindex="-1" text="AI-Convincement" parse-escape-sequences="true" display-tooltip-when-elided="true" name="YaxisLabel" style="position: absolute; right: 100%; color: rgb(255, 255, 255); rotate: 270deg; bottom: 50%; font-size: 33px; translate: 48px 0;" />
-                <ui:Label tabindex="-1" text="25%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="25Percentage" style="position: absolute; color: rgb(255, 255, 255); right: 100%; bottom: 25%; font-size: 30px;" />
-                <ui:Label tabindex="-1" text="50%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="50Percentage" style="position: absolute; color: rgb(255, 255, 255); right: 100%; bottom: 50%; font-size: 30px;" />
-                <ui:Label tabindex="-1" text="75%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="75Percentage" style="position: absolute; color: rgb(255, 255, 255); right: 100%; bottom: 75%; font-size: 30px;" />
-                <ui:Label tabindex="-1" text="100%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="100Percentage" style="position: absolute; color: rgb(255, 255, 255); right: 100%; top: 0; font-size: 30px;" />
+        <ui:VisualElement name="LeftContainer" style="flex-grow: 1;">
+            <ui:VisualElement name="MenuIconContainer" style="flex-grow: 1; align-items: flex-start;">
+                <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="PauseMenuButton" class="gear-icon" />
+            </ui:VisualElement>
+            <ui:VisualElement name="GraphContainer" class="panel" style="flex-grow: 1; height: 100%; background-color: rgba(0, 0, 0, 0.78); margin-right: 68px; margin-top: 68px; margin-bottom: 68px; margin-left: 68px;">
+                <ui:VisualElement name="Graph" style="flex-grow: 1; margin-bottom: 100px; margin-left: 150px; border-bottom-color: rgb(255, 255, 255); border-left-color: rgb(255, 255, 255); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; flex-direction: row; align-items: flex-end; margin-right: 100px; margin-top: 100px;">
+                    <ui:Label tabindex="-1" text="AI-Convincement" parse-escape-sequences="true" display-tooltip-when-elided="true" name="YaxisLabel" style="position: absolute; right: 100%; color: rgb(255, 255, 255); rotate: 270deg; bottom: 50%; font-size: 33px; translate: 48px 0;" />
+                    <ui:Label tabindex="-1" text="25%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="25Percentage" style="position: absolute; color: rgb(255, 255, 255); right: 100%; bottom: 25%; font-size: 30px; translate: 0 50%;" />
+                    <ui:Label tabindex="-1" text="50%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="50Percentage" style="position: absolute; color: rgb(255, 255, 255); right: 100%; bottom: 50%; font-size: 30px; translate: 0 50%;" />
+                    <ui:Label tabindex="-1" text="75%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="75Percentage" style="position: absolute; color: rgb(255, 255, 255); right: 100%; bottom: 75%; font-size: 30px; translate: 0 50%;" />
+                    <ui:Label tabindex="-1" text="100%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="100Percentage" style="position: absolute; color: rgb(255, 255, 255); right: 100%; font-size: 30px; bottom: 100%; transform-origin: top; translate: 0 50%;" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="BubbleContainer" mouse-wheel-scroll-size="60" usage-hints="None" vertical-page-size="-1" style="height: 100%; width: 929px; flex-direction: column; justify-content: flex-start; align-self: auto; align-items: auto; -unity-text-align: upper-left; overflow: visible;" />
+        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="BubbleContainer" mouse-wheel-scroll-size="60" usage-hints="None" vertical-page-size="-1" style="height: 100%; flex-direction: column; justify-content: flex-start; align-self: auto; align-items: auto; -unity-text-align: upper-left; overflow: visible; min-width: 500px; max-width: 50%; width: 900px;" />
     </ui:VisualElement>
-    <ui:VisualElement style="flex-grow: 1; align-items: center; -unity-font: url(&quot;project://database/Assets/Fonts/ELEGANT%20TYPEWRITER%20Bold.ttf?fileID=12800000&amp;guid=d6ef603025f43b542afe69d8a3f8274e&amp;type=3#ELEGANT TYPEWRITER Bold&quot;); -unity-font-definition: initial;">
-        <ui:VisualElement name="VisualElement" style="flex-grow: 1; height: auto; justify-content: flex-end; align-items: center; width: 1295px;">
-            <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-self: auto; width: 100%;">
-                <ui:TextField picking-mode="Ignore" focusable="true" multiline="true" name="InputField" class="panel selectable" style="align-self: stretch; height: 100%; flex-grow: 1; color: rgb(255, 255, 255); flex-wrap: wrap; white-space: normal; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+    <ui:VisualElement name="Footer" style="flex-grow: 1; align-items: center; -unity-font: url(&quot;project://database/Assets/Fonts/ELEGANT%20TYPEWRITER%20Bold.ttf?fileID=12800000&amp;guid=d6ef603025f43b542afe69d8a3f8274e&amp;type=3#ELEGANT TYPEWRITER Bold&quot;); -unity-font-definition: initial; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; flex-shrink: 0;">
+        <ui:VisualElement name="ChatTextFieldSection" style="justify-content: flex-end; align-items: center; width: 80%; display: flex;">
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-self: auto; margin-bottom: 10px; width: 100%;">
+                <ui:TextField picking-mode="Ignore" focusable="true" multiline="true" name="InputField" class="panel selectable" style="align-self: stretch; height: 100px; flex-grow: 1; color: rgb(255, 255, 255); flex-wrap: wrap; white-space: normal; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
                     <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" text="dsdsdsdsdsdsd" name="PlaceHolder" style="position: absolute; width: auto; height: auto; margin-top: 0; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; margin-right: 0; margin-bottom: 0; margin-left: 0; font-size: 25px; -unity-font-style: italic; color: rgb(173, 173, 173);" />
                 </ui:TextField>
-                <ui:Button text="Send" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SendButton" class="button" style="height: 100%;" />
+                <ui:Button text="Send" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SendButton" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 10px;" />
             </ui:VisualElement>
             <ui:ProgressBar value="0.4" name="ProgressBar" high-value="1" class="panel" style="align-self: stretch; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; overflow: hidden;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="PlayAgainSection" style="flex-grow: 1; flex-direction: row; display: none;">
+            <ui:Button text="Play Again" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PlayAgainButton" class="button" style="margin-right: 20px; margin-left: 20px;" />
+            <ui:Button text="Back to menu" parse-escape-sequences="true" display-tooltip-when-elided="true" name="MainMenuButton" class="button" style="margin-right: 20px; margin-left: 20px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
