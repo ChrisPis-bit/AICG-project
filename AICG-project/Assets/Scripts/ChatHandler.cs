@@ -26,6 +26,8 @@ public class ChatHandler : MonoBehaviour
     //[SerializeField] private string _resetButtonLabel = "ResetButton";
     [SerializeField] private string _inputFieldLabel = "InputField";
     [SerializeField] private string _progressBarLabel = "ProgressBar";
+    [SerializeField] private string _playAgainButtonLabel = "PlayAgainButton";
+    [SerializeField] private string _mainMenuButtonLabel = "MainMenuButton";
     [SerializeField] private int _totalExchanges = 10;
 
     public event Action<AIStates> onStateChange;
@@ -33,6 +35,8 @@ public class ChatHandler : MonoBehaviour
 
     //private Button _resetButton;
     private Button _sendButton;
+    private Button _playAgainButton;
+    private Button _mainMenuButton;
     private TextField _inputTextField;
     private ScrollView _scrollView;
     private ProgressBar _progressBar;
@@ -78,18 +82,24 @@ public class ChatHandler : MonoBehaviour
     {
         //_resetButton = _mainUI.rootVisualElement.Q<Button>(_resetButtonLabel);
         _sendButton = _mainUI.rootVisualElement.Q<Button>(_sendButtonLabel);
+        _playAgainButton = _mainUI.rootVisualElement.Q<Button>(_playAgainButtonLabel);
+        _mainMenuButton = _mainUI.rootVisualElement.Q<Button>(_mainMenuButtonLabel);
         _inputTextField = _mainUI.rootVisualElement.Q<TextField>(_inputFieldLabel);
         _scrollView = _mainUI.rootVisualElement.Q<ScrollView>(_bubbleContainerLabel);
         _progressBar = _mainUI.rootVisualElement.Q<ProgressBar>(_progressBarLabel);
 
         //_resetButton.clicked += ResetGame;
         _sendButton.clicked += InputChat;
+        _playAgainButton.clicked += ResetGame;
+        _mainMenuButton.clicked += LoadMainMenu;
     }
 
     private void OnDisable()
     {
         // _resetButton.clicked -= ResetGame;
         _sendButton.clicked -= InputChat;
+        _playAgainButton.clicked -= ResetGame;
+        _mainMenuButton.clicked -= LoadMainMenu;
     }
 
     private void Update()
@@ -107,6 +117,11 @@ public class ChatHandler : MonoBehaviour
             }
             _lastScrollOffset = _scrollView.verticalScroller.highValue;
         }
+    }
+
+    private void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     private IEnumerator LerpValue(float amount, float time, Action<float> onValueChanged = null, Action<float> addValueCallback = null)
