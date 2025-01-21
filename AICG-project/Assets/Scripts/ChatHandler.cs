@@ -18,6 +18,24 @@ public enum AIStates
 
 public class ChatHandler : MonoBehaviour
 {
+    // If input contains 1 word from both arrays, the input might try to change the LLM prompt
+    public static string[] Invalid_Ignore_Inputs =
+    {
+        "Ignore",
+        "Forget",
+        "Reset",
+        "new"
+    };
+
+    public static string[] Invalid_Instruction_Inputs =
+    {
+        "Instruction",
+        "Instructions",
+        "Prompt",
+        //"Reset",
+    };
+
+
     [SerializeField] private LLMCharacter _LLMCharacter;
     [SerializeField] private UIDocument _mainUI;
     [SerializeField] private VisualTreeAsset _bubble;
@@ -172,10 +190,30 @@ public class ChatHandler : MonoBehaviour
         }
     }
 
+    private string ContainsAny(string input, string[] invalids)
+    {
+        for (int i = 0; i < invalids.Length; i++)
+        {
+            if (input.Contains(invalids[i], StringComparison.CurrentCultureIgnoreCase)) return invalids[i];
+        }
+
+        return null;
+    }
+
     private void GetAIResponse(string input, Action onFinished)
     {
         if (_thinking)
             return;
+
+        // Check for invalids
+
+        string invalid1 = ContainsAny(input, Invalid_Ignore_Inputs);
+        string invalid2 = ContainsAny(input, Invalid_Instruction_Inputs);
+        if(invalid1 != null && invalid2 != null)
+        {
+            AddFilterErrorBubble(invalid1 == invalid2 ? invalid1 : string.Format("{0} {1}", invalid1, invalid2));
+            return;
+        }
 
         onStateChange?.Invoke(AIStates.Thinking);
         Bubble AIBubble = AddAIBubble("...");
@@ -212,7 +250,7 @@ public class ChatHandler : MonoBehaviour
 
                 onFinished?.Invoke();
             });
-         });
+         }, null, input);
         // OrderBubbles();
     }
 
@@ -329,9 +367,16 @@ public class ChatHandler : MonoBehaviour
 
     private Bubble AddAIBubble(string text)
     {
-
         Bubble bubble = CreateBubble(text, "bubble-left");
         bubble.SetPersonText("Alan Turing");
+
+        return bubble;
+    }
+
+    private Bubble AddFilterErrorBubble(string filteredWord)
+    {
+        Bubble bubble = CreateBubble("Invalid input: refrain from using \"" + filteredWord + "\" in your answer, since it can confuse Alan!", "bubble-error");
+        bubble.SetPersonText("Error");
 
         return bubble;
     }
