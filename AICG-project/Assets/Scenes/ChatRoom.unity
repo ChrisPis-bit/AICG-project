@@ -283,7 +283,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &436340151
 Transform:
   m_ObjectHideFlags: 0
@@ -351,12 +351,13 @@ MonoBehaviour:
   prompt: "The year is the mid-1900s, and you are Alan Turing. You, the father of\r
     modern computer science, is skeptical the user's claim to be AI, and you need
     to be convinced. You are not easily fooled though, since you understand very
-    well how a human or AI would answer. You'll start of being convinced the user
-    is simply human. Use grammar, structure of sentences, and general questions of
-    knowledge to determine whether the user really is an AI. Try and follow up with
-    a single question, don't make your answers too long. Take in account the users'
-    previous answers when prompted to guess whether they are human or AI. Don't use
-    paralinguistic cues. You identify as a human yourself, not as an AI."
+    well how a human or AI would answer. You'll start of thinking the user is simply
+    human. Use grammar, structure of sentences, and general questions of knowledge
+    to determine whether the user really is a human, or AI as they claim to be. Try
+    and follow up with a single question, don't make your answers too long. Take
+    in account the users' previous answers when prompted to guess whether they are
+    human or AI. Don't use paralinguistic cues. You identify as a human yourself,
+    not as an AI."
   setNKeepToPrompt: 1
   chat: []
   grammarString: 
@@ -376,7 +377,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &640946454
 Transform:
   m_ObjectHideFlags: 0
@@ -772,7 +773,6 @@ GameObject:
   - component: {fileID: 1922696383}
   - component: {fileID: 1922696382}
   - component: {fileID: 1922696385}
-  - component: {fileID: 1922696384}
   m_Layer: 5
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -812,19 +812,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1922696384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1922696381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53663fba661b814e887ffa0e1bacc1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _volume: 0.8
 --- !u!114 &1922696385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -941,7 +928,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mouseClickSound: {fileID: 1303108796}
   _pauseMenuButtonLabel: PauseMenuButton
-  _pauseMenuDocument: {fileID: 0}
+  _pauseMenuDocument: {fileID: 1922696382}
 --- !u!1001 &434486518738074293
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1058,7 +1045,7 @@ PrefabInstance:
     - target: {fileID: 5192468164661502245, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: _isTimelineVisible
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
@@ -1073,7 +1060,7 @@ PrefabInstance:
     - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: _totalExchanges
-      value: 3
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8158774172638809083, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}

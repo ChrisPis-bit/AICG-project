@@ -29,6 +29,6 @@ public class ChatCanvasEventHandler : MonoBehaviour
 
     private void OnPauseMenuButtonClick(){
         Debug.Log("Pause Menu Button Clicked");
-        _pauseMenuDocument.enabled = true;
+        _pauseMenuDocument.rootVisualElement.transform.position = Vector3.zero;
     }
 }

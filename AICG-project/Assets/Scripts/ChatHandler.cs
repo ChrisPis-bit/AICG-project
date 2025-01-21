@@ -187,7 +187,10 @@ public class ChatHandler : MonoBehaviour
         SetPlaceholderText("Alan is thinking...");
         SetPlaceholderVisibility(true);
 
-        Task chatTask = _LLMCharacter.Chat(input,
+
+        AskScore(score =>
+        {
+            Task chatTask = _LLMCharacter.Chat(input,
             s =>
             {
                 if (!_talking)
@@ -200,18 +203,16 @@ public class ChatHandler : MonoBehaviour
             {
                 onStateChange?.Invoke(AIStates.Idle);
 
-                AskScore(score =>
-                {
-                    Scores[_currentExchange] = score;
-                    _inputTextField.value = "";
-                    _inputTextField.focusable = true;
-                    _thinking = false;
-                    _talking = false;
-                    SetPlaceholderText("Enter text...");
+                Scores[_currentExchange] = score;
+                _inputTextField.value = "";
+                _inputTextField.focusable = true;
+                _thinking = false;
+                _talking = false;
+                SetPlaceholderText("Enter text...");
 
-                    onFinished?.Invoke();
-                });
+                onFinished?.Invoke();
             });
+         });
         // OrderBubbles();
     }
 
@@ -257,13 +258,13 @@ public class ChatHandler : MonoBehaviour
         }
     }
 
-    private void AskScore(Action<int> onComplete, Action<string> stringCallback = null)
+    private void AskScore(Action<int> onComplete, Action<string> stringCallback = null, string message = "")
     {
         string answer = "";
 
-        Task chatTask = _LLMCharacter.Chat("Choose whether you suspect I'm AI or Human based on my previous answers. " +
+        Task chatTask = _LLMCharacter.Chat(message + " (Note: Choose whether you suspect I'm AI or Human based on our conversation so far. " +
                 "Answer with a scale of 0 to 100, 0 being human, and 100 being AI. " +
-                "Answer in the following format: x/100. Give a short and final answer without follow up questions, please.", s =>
+                "Answer in the following format: x/100. Give a short and final answer without follow up questions, please.)", s =>
                 {
                     answer = s;
                     stringCallback?.Invoke(s);
