@@ -18,6 +18,7 @@ public class AISoundPlayer : MonoBehaviour
 
     private void OnDisable()
     {
+        instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         instance.release();
         _chatHandler.onStateChange -= OnStateChange;
     }

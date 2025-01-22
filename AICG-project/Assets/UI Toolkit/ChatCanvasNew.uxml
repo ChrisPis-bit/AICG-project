@@ -18,7 +18,7 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="BubbleContainer" mouse-wheel-scroll-size="60" usage-hints="None" vertical-page-size="-1" style="height: 100%; flex-direction: column; justify-content: flex-start; align-self: auto; align-items: auto; -unity-text-align: upper-left; overflow: visible; min-width: 500px; max-width: 50%; width: 900px;" />
+        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="BubbleContainer" mouse-wheel-scroll-size="120" usage-hints="None" vertical-page-size="-1" style="height: 100%; flex-direction: column; justify-content: flex-start; align-self: auto; align-items: auto; -unity-text-align: upper-left; overflow: visible; min-width: 500px; max-width: 50%; width: 900px;" />
     </ui:VisualElement>
     <ui:VisualElement name="Footer" style="flex-grow: 1; align-items: center; -unity-font: url(&quot;project://database/Assets/Fonts/ELEGANT%20TYPEWRITER%20Bold.ttf?fileID=12800000&amp;guid=d6ef603025f43b542afe69d8a3f8274e&amp;type=3#ELEGANT TYPEWRITER Bold&quot;); -unity-font-definition: initial; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; flex-shrink: 0;">
         <ui:VisualElement name="ChatTextFieldSection" style="justify-content: flex-end; align-items: center; width: 80%; display: flex;">

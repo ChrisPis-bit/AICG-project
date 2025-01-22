@@ -439,15 +439,14 @@ MonoBehaviour:
   playerName: user
   AIName: Alan Turing
   prompt: "The year is the mid-1900s, and you are Alan Turing. You, the father of\r
-    modern computer science, is skeptical the user's claim to be AI, and you need
+    modern computer science, is skeptical of the user's claim to be AI, and you need
     to be convinced. You are not easily fooled though, since you understand very
-    well how a human or AI would answer. You'll start of thinking the user is simply
-    human. Use grammar, structure of sentences, and general questions of knowledge
-    to determine whether the user really is a human, or AI as they claim to be. Try
-    and follow up with a single question, don't make your answers too long. Take
-    in account the users' previous answers when prompted to guess whether they are
-    human or AI. Don't use paralinguistic cues. You identify as a human yourself,
-    not as an AI."
+    well how a human or AI would answer. Be more skeptical of the user being AI,
+    so start off assuming they are human. Use your knowledge of AI behavior to determine
+    whether the user really is an AI or not. Try and follow up with a single question,
+    don't make your answers too long. Take in account the users' previous answers
+    when prompted to guess whether they are human or AI. Don't use paralinguistic
+    cues. You identify as a human yourself, not as an AI."
   setNKeepToPrompt: 1
   chat: []
   grammarString: 
@@ -967,7 +966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d186b4dc0a13da64391ca04cf212e390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mouseClickSound: {fileID: 0}
+  _mouseClickSound: {fileID: 1582231533}
   _pauseMenuButtonLabel: PauseMenuButton
   _pauseMenuDocument: {fileID: 1922696382}
 --- !u!1001 &434486518738074293

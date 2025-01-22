@@ -63,6 +63,7 @@ public class ChatHandler : MonoBehaviour
 
     private bool _thinking = false;
     private bool _talking = false;
+    private bool _llmLoaded = false;
     private bool _forceScroll = false;
 
     private int _currentExchange = 0;
@@ -85,12 +86,14 @@ public class ChatHandler : MonoBehaviour
         SetPlaceholderCallback();
 
         //_resetButton.visible = false;
+        _llmLoaded = false;
         _inputTextField.focusable = false;
+        _LLMCharacter.llm = FindFirstObjectByType<LLM>();
         _ = _LLMCharacter.Warmup(() =>
         {
             _inputTextField.focusable = true;
-
             GetAIResponse("Hello, please introduce yourself and state your goal with this conversation.", null);
+            _llmLoaded = true;
         });
 
         UpdateProgressText();
@@ -122,6 +125,7 @@ public class ChatHandler : MonoBehaviour
 
     private void Update()
     {
+        // Handle auto-scroll
         if (_lastScrollOffset != _scrollView.verticalScroller.highValue)
         {
             if (_forceScroll)
@@ -135,6 +139,10 @@ public class ChatHandler : MonoBehaviour
             }
             _lastScrollOffset = _scrollView.verticalScroller.highValue;
         }
+
+        // Enter to type
+        if (Input.GetKeyDown(KeyCode.Return))
+            InputChat();
     }
 
     private void LoadMainMenu()
@@ -175,9 +183,10 @@ public class ChatHandler : MonoBehaviour
 
     private void InputChat()
     {
-        if (!_thinking && _currentExchange < _totalExchanges)
+        if (!_thinking && _currentExchange < _totalExchanges && _llmLoaded)
         {
             string input = _inputTextField.value;
+            input = input.Trim('\n');
             AddPlayerBubble(input);
 
             if (_currentExchange + 1 == _totalExchanges) input += " (Note: Do not ask anymore follow-up questions. Do not remark on this note, only the text before.)";
@@ -220,6 +229,7 @@ public class ChatHandler : MonoBehaviour
         _thinking = true;
 
         _inputTextField.focusable = false;
+        _mainUI.rootVisualElement.Focus();
         _inputTextField.value = "";
 
         SetPlaceholderText("Alan is thinking...");
@@ -244,6 +254,7 @@ public class ChatHandler : MonoBehaviour
                 Scores[_currentExchange] = score;
                 _inputTextField.value = "";
                 _inputTextField.focusable = true;
+                SetPlaceholderVisibility(_inputTextField.focusController.focusedElement != _inputTextField);
                 _thinking = false;
                 _talking = false;
                 SetPlaceholderText("Enter text...");
