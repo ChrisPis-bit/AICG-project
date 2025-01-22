@@ -42,10 +42,11 @@
     border-right-color: rgb(103, 103, 103);
     border-top-color: rgb(103, 103, 103);
     border-bottom-color: rgb(103, 103, 103);
-    transition-duration: 0.25s;
-    transition-timing-function: ease-in-out;
+    transition-duration: 0.25s, 0.25s;
+    transition-timing-function: ease-in-out, ease-in-out;
     background-color: rgb(38, 38, 38);
     color: rgb(255, 255, 255);
+    transition-property: background-color, border-color;
 }
 
 .button:hover {
