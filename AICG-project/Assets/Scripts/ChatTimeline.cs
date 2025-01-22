@@ -41,12 +41,12 @@ public class ChatTimeline : MonoBehaviour
 
     private void OnEnable()
     {
-        _chatHandler.onVerdict += OnVerdictGiven;
+        _chatHandler.onVerdictDelayed += OnVerdictGiven;
     }
 
     private void OnDisable()
     {
-        _chatHandler.onVerdict -= OnVerdictGiven;
+        _chatHandler.onVerdictDelayed -= OnVerdictGiven;
     }
 
     private void OnVerdictGiven(bool _)

@@ -30,9 +30,9 @@
             </ui:VisualElement>
             <ui:ProgressBar value="0.4" name="ProgressBar" high-value="1" class="panel" style="align-self: stretch; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; overflow: hidden;" />
         </ui:VisualElement>
-        <ui:VisualElement name="PlayAgainSection" style="flex-grow: 1; flex-direction: row; display: none;">
+        <ui:VisualElement name="PlayAgainSection" style="flex-grow: 1; flex-direction: row; display: flex;">
             <ui:Button text="Play Again" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PlayAgainButton" class="button" style="margin-right: 20px; margin-left: 20px;" />
-            <ui:Button text="Back to menu" parse-escape-sequences="true" display-tooltip-when-elided="true" name="MainMenuButton" class="button" style="margin-right: 20px; margin-left: 20px;" />
+            <ui:Button text="Continue" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ContinueButton" class="button" style="margin-right: 20px; margin-left: 20px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

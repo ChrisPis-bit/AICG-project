@@ -39,25 +39,32 @@ public class ChatHandler : MonoBehaviour
     [SerializeField] private LLMCharacter _LLMCharacter;
     [SerializeField] private UIDocument _mainUI;
     [SerializeField] private VisualTreeAsset _bubble;
+    [SerializeField] private float _endScreenDelay = 1.5f;
     [SerializeField] private string _bubbleContainerLabel = "BubbleContainer";
     [SerializeField] private string _sendButtonLabel = "SendButton";
     //[SerializeField] private string _resetButtonLabel = "ResetButton";
     [SerializeField] private string _inputFieldLabel = "InputField";
     [SerializeField] private string _progressBarLabel = "ProgressBar";
+    [SerializeField] private string _chatSectionLabel = "ChatSection";
+    [SerializeField] private string _endSectionLabel = "EndSection";
     [SerializeField] private string _playAgainButtonLabel = "PlayAgainButton";
-    [SerializeField] private string _mainMenuButtonLabel = "MainMenuButton";
+    [SerializeField] private string _continueButtonLabel = "ContinueButton";
     [SerializeField] private int _totalExchanges = 10;
 
     public event Action<AIStates> onStateChange;
     public event Action<bool> onVerdict;
+    public event Action<bool> onVerdictDelayed;
 
     //private Button _resetButton;
     private Button _sendButton;
-    private Button _playAgainButton;
-    private Button _mainMenuButton;
     private TextField _inputTextField;
     private ScrollView _scrollView;
     private ProgressBar _progressBar;
+
+    private Button _playAgainButton;
+    private Button _continueButton;
+    private VisualElement _chatSection;
+    private VisualElement _endSection;
 
     private List<Bubble> _chatBubbles = new();
 
@@ -104,15 +111,20 @@ public class ChatHandler : MonoBehaviour
         //_resetButton = _mainUI.rootVisualElement.Q<Button>(_resetButtonLabel);
         _sendButton = _mainUI.rootVisualElement.Q<Button>(_sendButtonLabel);
         _playAgainButton = _mainUI.rootVisualElement.Q<Button>(_playAgainButtonLabel);
-        _mainMenuButton = _mainUI.rootVisualElement.Q<Button>(_mainMenuButtonLabel);
+        _continueButton = _mainUI.rootVisualElement.Q<Button>(_continueButtonLabel);
         _inputTextField = _mainUI.rootVisualElement.Q<TextField>(_inputFieldLabel);
         _scrollView = _mainUI.rootVisualElement.Q<ScrollView>(_bubbleContainerLabel);
         _progressBar = _mainUI.rootVisualElement.Q<ProgressBar>(_progressBarLabel);
 
+        _chatSection = _mainUI.rootVisualElement.Q<VisualElement>(_chatSectionLabel);
+        _endSection = _mainUI.rootVisualElement.Q<VisualElement>(_endSectionLabel);
+
+        ToggleChat();
+
         //_resetButton.clicked += ResetGame;
         _sendButton.clicked += InputChat;
         _playAgainButton.clicked += ResetGame;
-        _mainMenuButton.clicked += LoadMainMenu;
+        _continueButton.clicked += ToggleChat;
     }
 
     private void OnDisable()
@@ -120,7 +132,7 @@ public class ChatHandler : MonoBehaviour
         // _resetButton.clicked -= ResetGame;
         _sendButton.clicked -= InputChat;
         _playAgainButton.clicked -= ResetGame;
-        _mainMenuButton.clicked -= LoadMainMenu;
+        _continueButton.clicked -= ToggleChat;
     }
 
     private void Update()
@@ -183,7 +195,7 @@ public class ChatHandler : MonoBehaviour
 
     private void InputChat()
     {
-        if (!_thinking && _currentExchange < _totalExchanges && _llmLoaded)
+        if (!_thinking && _llmLoaded)
         {
             string input = _inputTextField.value;
             input = input.Trim('\n');
@@ -192,9 +204,14 @@ public class ChatHandler : MonoBehaviour
             if (_currentExchange + 1 == _totalExchanges) input += " (Note: Do not ask anymore follow-up questions. Do not remark on this note, only the text before.)";
             GetAIResponse(input, () =>
             {
-                _currentExchange++;
+                if (_currentExchange < _totalExchanges)
+                {
+                    _currentExchange++;
+                    CheckEndGame();
+                }
+
                 UpdateProgressText();
-                CheckEndGame();
+                
             });
         }
     }
@@ -218,7 +235,7 @@ public class ChatHandler : MonoBehaviour
 
         string invalid1 = ContainsAny(input, Invalid_Ignore_Inputs);
         string invalid2 = ContainsAny(input, Invalid_Instruction_Inputs);
-        if(invalid1 != null && invalid2 != null)
+        if (invalid1 != null && invalid2 != null)
         {
             AddFilterErrorBubble(invalid1 == invalid2 ? invalid1 : string.Format("{0} {1}", invalid1, invalid2));
             return;
@@ -251,7 +268,7 @@ public class ChatHandler : MonoBehaviour
             {
                 onStateChange?.Invoke(AIStates.Idle);
 
-                Scores[_currentExchange] = score;
+                if(_currentExchange < _totalExchanges) Scores[_currentExchange] = score;
                 _inputTextField.value = "";
                 _inputTextField.focusable = true;
                 SetPlaceholderVisibility(_inputTextField.focusController.focusedElement != _inputTextField);
@@ -261,7 +278,7 @@ public class ChatHandler : MonoBehaviour
 
                 onFinished?.Invoke();
             });
-         }, null, input);
+        }, null, input);
         // OrderBubbles();
     }
 
@@ -291,19 +308,39 @@ public class ChatHandler : MonoBehaviour
             int endScore = Scores[_totalExchanges - 1];
             Bubble verdictBubble = AddVerdictBubble(endScore + "/100");
 
-            if (endScore <= 50)
+            bool alanWon = endScore <= 50;
+            if (alanWon)
             {
                 onVerdict?.Invoke(true);
-                verdictBubble.SetText(verdictBubble.Text + "\n You were more Human than AI. Alan Turing Wins!");
+                verdictBubble.SetText(verdictBubble.Text + "\n You were more Human than AI. Alan Turing Wins!\nPress Continue if you would like to continue the conversation.");
             }
             else
             {
                 onVerdict?.Invoke(false);
-                verdictBubble.SetText(verdictBubble.Text + "\n You were more AI than Human. You Win!");
+                verdictBubble.SetText(verdictBubble.Text + "\n You were more AI than Human. You Win!\nPress Continue if you would like to continue the conversation.");
             }
+
+            Delay(_endScreenDelay, () =>
+            {
+                _inputTextField.focusable = true;
+
+                onVerdictDelayed?.Invoke(alanWon);
+                ToggleEnd();
+            });
+
             //_resetButton.visible = true;
 
             //OrderBubbles();
+        }
+    }
+
+    private void Delay(float time, Action onComplete)
+    {
+        StartCoroutine(DelayCoroutine());
+        IEnumerator DelayCoroutine()
+        {
+            yield return new WaitForSeconds(time);
+            onComplete?.Invoke();
         }
     }
 
@@ -335,37 +372,7 @@ public class ChatHandler : MonoBehaviour
     private void ResetGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        //for (int i = 0; i < _chatBubbles.Count; i++)
-        //{
-        //    Destroy(_chatBubbles[i].gameObject);
-        //}
-        //_chatBubbles.Clear();
-        //_resetButton.gameObject.SetActive(false);
-
-        //_exchanges = 0;
-        //if (_inputPlaceholder) _inputPlaceholder.text = "Loading...";
-
-        //_ = _LLMCharacter.Warmup(() =>
-        //{
-        //    _playerInputField.interactable = true;
-        //    if (_inputPlaceholder) _inputPlaceholder.text = "Enter Text...";
-        //});
     }
-
-    //private void OrderBubbles()
-    //{
-    //    _bubbleLayout.sizeDelta = new Vector2(_bubbleLayout.sizeDelta.x, _chatBubbles.Sum(b => _bubblePadding + b.RectTransform.sizeDelta.y));
-
-    //    float curHeight = 0;
-    //    for (int i = _chatBubbles.Count - 1; i >= 0; i--)
-    //    {
-    //        ChatBubble bubble = _chatBubbles[i];
-
-    //        curHeight += _bubblePadding;
-    //        bubble.RectTransform.anchoredPosition = new Vector3(0, curHeight);
-    //        curHeight += bubble.RectTransform.sizeDelta.y;
-    //    }
-    //}
 
     private Bubble AddPlayerBubble(string text)
     {
@@ -441,6 +448,17 @@ public class ChatHandler : MonoBehaviour
     }
 
     public void SetPlaceholderVisibility(bool visible) => _inputTextField.Q<Label>("PlaceHolder").visible = visible;
+
+    public void ToggleChat() => ToggleChatAndEnd(true);
+    public void ToggleEnd() => ToggleChatAndEnd(false);
+
+    public void ToggleChatAndEnd(bool showChat)
+    {
+        _chatSection.style.display = showChat ? DisplayStyle.Flex : DisplayStyle.None;
+        _endSection.style.display = !showChat ? DisplayStyle.Flex : DisplayStyle.None;
+
+        if (showChat) UpdateProgressText();
+    }
 
     public class Bubble
     {

@@ -1099,8 +1099,28 @@ PrefabInstance:
       objectReference: {fileID: 436340152}
     - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
-      propertyPath: _totalExchanges
+      propertyPath: _endScreenDelay
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
+        type: 3}
+      propertyPath: _totalExchanges
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
+        type: 3}
+      propertyPath: _endSectionLabel
+      value: PlayAgainSection
+      objectReference: {fileID: 0}
+    - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
+        type: 3}
+      propertyPath: _chatSectionLabel
+      value: ChatTextFieldSection
+      objectReference: {fileID: 0}
+    - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
+        type: 3}
+      propertyPath: _continueButtonLabel
+      value: ContinueButton
       objectReference: {fileID: 0}
     - target: {fileID: 8158774172638809083, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
