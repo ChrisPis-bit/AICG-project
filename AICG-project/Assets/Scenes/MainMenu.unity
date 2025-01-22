@@ -964,7 +964,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1145145352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1288,7 +1288,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1789338557}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.104690544, y: -0.057057872, z: -0.006016446, w: 0.9928485}
+  m_LocalRotation: {x: -0.04677657, y: -0.10828571, z: -0.0051009115, w: 0.99300563}
   m_LocalPosition: {x: 1.1296457, y: 2.6084886, z: -19.79696}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1356,6 +1356,8 @@ PlayableDirector:
     value: {fileID: 1789338560}
   - key: {fileID: 1883178789768884577, guid: 52aea34611c45c047981b96f3eb3a794, type: 2}
     value: {fileID: 1342776551}
+  - key: {fileID: 117008685968492995, guid: 52aea34611c45c047981b96f3eb3a794, type: 2}
+    value: {fileID: 1145145351}
   m_ExposedReferences:
     m_References:
     - aa3139e542138f64eab23e50ad59b43f: {fileID: 422736959}
@@ -1387,7 +1389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22056fd10b6774b468428f62be636414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playOnce: 1
 --- !u!1 &2100146741
 GameObject:
   m_ObjectHideFlags: 0

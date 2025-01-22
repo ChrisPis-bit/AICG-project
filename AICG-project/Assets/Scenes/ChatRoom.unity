@@ -967,7 +967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d186b4dc0a13da64391ca04cf212e390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mouseClickSound: {fileID: 0}
+  _mouseClickSound: {fileID: 1582231533}
   _pauseMenuButtonLabel: PauseMenuButton
   _pauseMenuDocument: {fileID: 1922696382}
 --- !u!1001 &434486518738074293
@@ -1101,7 +1101,7 @@ PrefabInstance:
     - target: {fileID: 5898644070054068968, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
       propertyPath: _totalExchanges
-      value: 8
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8158774172638809083, guid: 35d792645fe8e984c90f1352be121be2,
         type: 3}
