@@ -4,16 +4,17 @@
         <ui:VisualElement name="MenuContainer" style="flex-grow: 1; align-items: center; justify-content: center;">
             <ui:VisualElement name="Menu" class="menu" style="height: 518px; width: 862px; align-items: center;">
                 <ui:VisualElement name="MenuHeader" class="menu-header">
-                    <ui:Label tabindex="-1" text="Reverse Turing Test" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" class="title" />
-                    <ui:Label tabindex="-1" text="Can you convince Alan you are an AI?" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-text-align: upper-center;" />
+                    <ui:Label tabindex="-1" text="Reverse Turing Test" parse-escape-sequences="true" display-tooltip-when-elided="true" name="MenuTitle" class="title" />
+                    <ui:Label tabindex="-1" text="Can you convince Alan you are an AI?" parse-escape-sequences="true" display-tooltip-when-elided="true" name="MenuSubTitle" style="-unity-text-align: upper-center;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="MenuBody" class="menu-body" style="justify-content: center;">
                     <ui:Button text="START" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartButton" class="button" />
                     <ui:Button text="EXIT" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ExitButton" class="button" />
                 </ui:VisualElement>
                 <ui:VisualElement name="MenuFooter" class="menu-footer">
-                    <ui:Label tabindex="-1" text="Sound Settings:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SoundText" style="-unity-text-align: upper-center;" />
-                    <ui:Slider label="Volume" high-value="1" show-input-field="false" name="VolumeSlider" style="width: 488px;" />
+                    <ui:Label tabindex="-1" text="Sound Volume:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SoundText" style="-unity-text-align: upper-center;" />
+                    <ui:Slider label="Music" high-value="1" show-input-field="false" name="MusicVolumeSlider" style="width: 488px;" />
+                    <ui:Slider label="Talking" high-value="1" show-input-field="false" name="TalkingVolumeSlider" style="width: 488px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

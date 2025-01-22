@@ -5,12 +5,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using FMODUnity;
 
-public class MainMenuEvents : MonoBehaviour
+public class AllMenuEvents : MonoBehaviour
 {
     //
     private UIDocument _document;
     private Button _startButton;
     private Button _exitButton;
+    private Button _continueButton;
+    private Button _mainMenuButton;
     private List<Button> _menuButtons;
 
     // sliders
@@ -25,6 +27,10 @@ public class MainMenuEvents : MonoBehaviour
         _startButton?.RegisterCallback<ClickEvent>(OnStartGameClick);
         _exitButton = _document.rootVisualElement.Q<Button>("ExitButton");
         _exitButton?.RegisterCallback<ClickEvent>(onGameExitClick);
+        _continueButton = _document.rootVisualElement.Q<Button>("ContinueButton");
+        _continueButton?.RegisterCallback<ClickEvent>(OnContinueButtonClick);
+        _mainMenuButton = _document.rootVisualElement.Q<Button>("MainMenuButton");
+        _mainMenuButton?.RegisterCallback<ClickEvent>(OnMainMenuButtonClick);
 
         // sliders
         _musicVolumeSlider = _document.rootVisualElement.Q<Slider>("MusicVolumeSlider");
@@ -56,6 +62,16 @@ public class MainMenuEvents : MonoBehaviour
     private void onGameExitClick(ClickEvent evt){
         Debug.Log("Exit Game Clicked");
         Application.Quit();
+    }
+
+    private void OnContinueButtonClick(ClickEvent evt){
+        Debug.Log("Continue Button Clicked");
+        _document.rootVisualElement.transform.position = Vector3.one * 10000;
+    }
+
+    private void OnMainMenuButtonClick(ClickEvent evt){
+        Debug.Log("Main Menu Button Clicked");
+        SceneManager.LoadScene("MainMenu");
     }
 
     private void OnMenuButtonClick(ClickEvent evt){
