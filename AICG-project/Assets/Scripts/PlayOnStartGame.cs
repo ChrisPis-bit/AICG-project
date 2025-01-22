@@ -10,11 +10,14 @@ using UnityEngine.Playables;
 [RequireComponent(typeof(PlayableDirector))]
 public class DelayedPlayOnAwake : MonoBehaviour
 {
+    private static bool _introSequencePlayOnce = true;
 
-    [SerializeField] private bool _playOnce = true;
     private void Start()
     {
-        if (_playOnce) { GetComponent<PlayableDirector>().Play(); _playOnce = false; }
-
+        if (_introSequencePlayOnce)
+        {
+            GetComponent<PlayableDirector>().Play();
+            _introSequencePlayOnce = false;
+        }
     }
 }

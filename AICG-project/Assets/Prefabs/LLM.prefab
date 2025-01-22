@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7853154613050421320}
   - component: {fileID: 8741340953699632991}
-  - component: {fileID: 2968894134747287906}
   m_Layer: 0
   m_Name: LLM
   m_TagString: Untagged
@@ -68,15 +67,3 @@ MonoBehaviour:
   SSLKeyPath: 
   minContextLength: 0
   maxContextLength: 131072
---- !u!114 &2968894134747287906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6385135625719918553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62c8fb212b764c24fa616cc54c5246d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

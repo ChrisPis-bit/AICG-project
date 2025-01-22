@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="ParameterPreset" id="{0139ea84-b405-4652-834b-7975469b4d0f}">
+	<object class="ParameterPreset" id="{bc2622af-e8d2-459a-a814-c7ae1b2ea20b}">
 		<property name="name">
-			<value>MusicVolume</value>
+			<value>TalkingVolume</value>
 		</property>
 		<relationship name="folder">
 			<destination>{0fb8fae3-9210-4350-8d22-9d16837f8d05}</destination>
 		</relationship>
 		<relationship name="parameter">
-			<destination>{b4db2873-a054-4299-9348-4cc20e6d29df}</destination>
+			<destination>{9611c50e-d48b-47b6-94af-a79f3a370223}</destination>
 		</relationship>
 	</object>
-	<object class="GameParameter" id="{b4db2873-a054-4299-9348-4cc20e6d29df}">
+	<object class="GameParameter" id="{9611c50e-d48b-47b6-94af-a79f3a370223}">
 		<property name="isGlobal">
 			<value>true</value>
 		</property>
