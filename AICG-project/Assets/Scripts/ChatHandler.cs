@@ -296,8 +296,6 @@ public class ChatHandler : MonoBehaviour
         SetPlaceholderVisibility(true);
 
 
-        AskScore(score =>
-        {
             Task chatTask = _LLMCharacter.Chat(input,
             s =>
             {
@@ -311,17 +309,20 @@ public class ChatHandler : MonoBehaviour
             {
                 onStateChange?.Invoke(AIStates.Idle);
 
-                if(_currentExchange < _totalExchanges) Scores[_currentExchange] = score;
-                _inputTextField.value = "";
-                _inputTextField.focusable = true;
-                SetPlaceholderVisibility(_inputTextField.focusController.focusedElement != _inputTextField);
-                _thinking = false;
-                _talking = false;
-                SetPlaceholderText("Enter text...");
+                AskScore(score =>
+                {
+                    if (_currentExchange < _totalExchanges) Scores[_currentExchange] = score;
+                    _inputTextField.value = "";
+                    _inputTextField.focusable = true;
+                    SetPlaceholderVisibility(_inputTextField.focusController.focusedElement != _inputTextField);
+                    _thinking = false;
+                    _talking = false;
+                    SetPlaceholderText("Enter text...");
 
-                onFinished?.Invoke();
+                    onFinished?.Invoke();
+
+                }, null, null);
             });
-        }, null, input);
         // OrderBubbles();
     }
 
@@ -396,7 +397,7 @@ public class ChatHandler : MonoBehaviour
     {
         string answer = "";
 
-        Task chatTask = _LLMCharacter.Chat(message + " (Note: Choose whether you suspect I'm AI or Human based on our conversation so far. " +
+        Task chatTask = _LLMCharacter.Chat(message + " (Note: Decide how much I behaved as an AI based on our conversation so far. " +
                 "Answer with a scale of 0 to 100, 0 being human, and 100 being AI. " +
                 "Answer in the following format: x/100. Give a short and final answer without follow up questions, please.)", s =>
                 {
