@@ -40,6 +40,7 @@ public class ChatHandler : MonoBehaviour
     [SerializeField] private UIDocument _mainUI;
     [SerializeField] private VisualTreeAsset _bubble;
     [SerializeField] private float _endScreenDelay = 1.5f;
+    [SerializeField] private int _winScore = 50;
     [SerializeField] private string _bubbleContainerLabel = "BubbleContainer";
     [SerializeField] private string _sendButtonLabel = "SendButton";
     //[SerializeField] private string _resetButtonLabel = "ResetButton";
@@ -99,7 +100,7 @@ public class ChatHandler : MonoBehaviour
         _ = _LLMCharacter.Warmup(() =>
         {
             _inputTextField.focusable = true;
-            GetAIResponse("Hello, please introduce yourself and state your goal with this conversation.", null);
+            GetAIResponseSimple("Hello, please introduce yourself and state your goal with this conversation.", null);
             _llmLoaded = true;
         });
 
@@ -195,10 +196,12 @@ public class ChatHandler : MonoBehaviour
 
     private void InputChat()
     {
-        if (!_thinking && _llmLoaded)
+        string input = _inputTextField.value;
+        input = input.Trim();
+
+        if (!_thinking && _llmLoaded && input.Length > 0)
         {
-            string input = _inputTextField.value;
-            input = input.Trim('\n');
+
             AddPlayerBubble(input);
 
             if (_currentExchange + 1 == _totalExchanges) input += " (Note: Do not ask anymore follow-up questions. Do not remark on this note, only the text before.)";
@@ -224,6 +227,46 @@ public class ChatHandler : MonoBehaviour
         }
 
         return null;
+    }
+
+    private void GetAIResponseSimple(string input, Action onFinished)
+    {
+        if (_thinking)
+            return;
+
+        onStateChange?.Invoke(AIStates.Thinking);
+        Bubble AIBubble = AddAIBubble("...");
+        _thinking = true;
+
+        _inputTextField.focusable = false;
+        _mainUI.rootVisualElement.Focus();
+        _inputTextField.value = "";
+
+        SetPlaceholderText("Alan is thinking...");
+        SetPlaceholderVisibility(true);
+
+
+        Task chatTask = _LLMCharacter.Chat(input,
+        s =>
+        {
+            if (!_talking)
+                onStateChange?.Invoke(AIStates.Talking);
+
+            _talking = true;
+            AIBubble.SetText(s);
+        }, () =>
+        {
+            onStateChange?.Invoke(AIStates.Idle);
+
+            _inputTextField.value = "";
+            _inputTextField.focusable = true;
+            SetPlaceholderVisibility(_inputTextField.focusController.focusedElement != _inputTextField);
+            _thinking = false;
+            _talking = false;
+            SetPlaceholderText("Enter text...");
+
+            onFinished?.Invoke();
+        });
     }
 
     private void GetAIResponse(string input, Action onFinished)
@@ -308,16 +351,21 @@ public class ChatHandler : MonoBehaviour
             int endScore = Scores[_totalExchanges - 1];
             Bubble verdictBubble = AddVerdictBubble(endScore + "/100");
 
-            bool alanWon = endScore <= 50;
+            bool alanWon = endScore < _winScore;
             if (alanWon)
             {
                 onVerdict?.Invoke(true);
-                verdictBubble.SetText(verdictBubble.Text + "\n You were more Human than AI. Alan Turing Wins!\nPress Continue if you would like to continue the conversation.");
+                verdictBubble.SetText(verdictBubble.Text + "\nYou were more Human than AI. Alan Turing Wins!\nPress Continue if you would like to continue the conversation.");
+            }
+            else if(endScore == _winScore)
+            {
+                onVerdict?.Invoke(false);
+                verdictBubble.SetText(verdictBubble.Text + "\nIt's a tie! You were as AI as you were Human!\nPress Continue if you would like to continue the conversation.");
             }
             else
             {
                 onVerdict?.Invoke(false);
-                verdictBubble.SetText(verdictBubble.Text + "\n You were more AI than Human. You Win!\nPress Continue if you would like to continue the conversation.");
+                verdictBubble.SetText(verdictBubble.Text + "\nYou were more AI than Human. You Win!\nPress Continue if you would like to continue the conversation.");
             }
 
             Delay(_endScreenDelay, () =>
