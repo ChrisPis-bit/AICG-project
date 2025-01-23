@@ -11,11 +11,13 @@ using UnityEngine.Playables;
 public class DelayedPlayOnAwake : MonoBehaviour
 {
     private static bool _introSequencePlayOnce = true;
+    public Animator alanAnimator;
 
     private void Start()
     {
         if (_introSequencePlayOnce)
         {
+            alanAnimator.SetTrigger("Talk");
             GetComponent<PlayableDirector>().Play();
             _introSequencePlayOnce = false;
         }
